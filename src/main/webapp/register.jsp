@@ -122,13 +122,13 @@
     <%@include file="view/Navbar.jsp" %>
 
     <div class="form-container">
-        <form action="${pageContext.request.contextPath}/register" method="post">
+        <form action="register" method="post">
             <div class="form-group">
                 <label for="full-name">Full Name</label>
                 <input 
                     type="text" 
                     id="full-name" 
-                    name="fullName"
+                    name="fname"
                     placeholder="Enter full name" 
                     required
                 >
@@ -154,7 +154,7 @@
                 <input 
                     type="tel" 
                     id="phone" 
-                    name="phone"
+                    name="phno"
                     placeholder="Enter phone number" 
                     required
                 >

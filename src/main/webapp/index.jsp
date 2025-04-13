@@ -16,7 +16,7 @@
  <%@ page import="model.connectionDAO, java.sql.Connection" %>
 
 
-<!-- intially tested the database connection -->
+<%-- <!-- intially tested the database connection -->
 <%
     Connection conn = connectionDAO.getconn();
     if (conn != null) {
@@ -24,7 +24,7 @@
     } else {
         out.print("Database connection failed.");
     }
-%>
+%> --%>
 
     <div class="section">
         <div class="bg-img"></div>
@@ -38,5 +38,6 @@
     
     <%@include file="view/recentbook.jsp" %>
 		<%-- <%@include file="overall_component/recentbook.jsp" %>  --%>
+		  <%@include file="view/footer.jsp" %>
 </body>	
 </html>
