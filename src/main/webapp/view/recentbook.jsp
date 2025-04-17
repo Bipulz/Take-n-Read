@@ -14,7 +14,7 @@
 <div class="book-container">
     <h3>Recent Books</h3>
     <div class="books-grid">
-        <!-- Example: Repeat this block dynamically up to 20 times -->
+       
         <div class="book-card">
             <img alt="Book Cover" src="img/book1.jpg">
             <div class="book-info">
@@ -119,7 +119,7 @@
 <div class="book-container">
     <h3>New Books</h3>
     <div class="books-grid">
-        <!-- Example: Repeat this block dynamically up to 20 times -->
+        
         <div class="book-card">
             <img alt="Book Cover" src="img/book1.jpg">
             <div class="book-info">
@@ -224,7 +224,7 @@
 <div class="book-container">
     <h3>Old Books</h3>
     <div class="books-grid">
-        <!-- Example: Repeat this block dynamically up to 20 times -->
+       
         <div class="book-card">
             <img alt="Book Cover" src="img/book1.jpg">
             <div class="book-info">

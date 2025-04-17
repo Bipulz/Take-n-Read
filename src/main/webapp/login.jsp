@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - ReadSphere</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+    
     <style>
-        body {
+        
+        .login-page {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
@@ -19,7 +19,39 @@
             flex-direction: column;
         }
 
-        .form-container {
+        
+        .login-page .search-form {
+            max-width: 450px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 25px;
+            background: #E5E7EB;
+            border: 2px solid #A3BFFA;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-page .search-form input {
+            padding: 10px 15px 10px 40px;
+            font-size: 15px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            color: #374151;
+            font-family: 'Roboto', sans-serif;
+            outline: none;
+        }
+
+        .login-page .search-form input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .login-page .search-form input:focus {
+            background: #FFFFFF;
+            box-shadow: none;
+        }
+
+        .login-page .form-container {
             flex: 1;
             display: flex;
             justify-content: center;
@@ -30,15 +62,16 @@
             margin: 2rem auto;
             background: #FFFFFF;
             border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
             transition: transform 0.3s ease;
         }
 
-        .form-container:hover {
+        .login-page .form-container:hover {
             transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
         }
 
-        form {
+        .login-page .form-container form {
             width: 100%;
             padding: 40px;
             display: flex;
@@ -46,11 +79,11 @@
             gap: 25px;
         }
 
-        .form-group {
+        .login-page .form-container .form-group {
             text-align: left;
         }
 
-        .form-group label {
+        .login-page .form-container .form-group label {
             font-size: 15px;
             font-weight: 500;
             color: #374151;
@@ -58,27 +91,28 @@
             margin-bottom: 8px;
         }
 
-        .input-wrapper {
+        .login-page .form-container .input-wrapper {
             position: relative;
             display: flex;
             align-items: center;
             background: #F3E8FF;
             border-radius: 10px;
             padding: 0 15px;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .input-wrapper:hover {
+        .login-page .form-container .input-wrapper:hover {
             background: #E5E7EB;
+            box-shadow: 0 0 8px rgba(163, 191, 250, 0.7);
         }
 
-        .input-wrapper i {
+        .login-page .form-container .input-wrapper i {
             color: #6B7280;
             font-size: 18px;
             margin-right: 12px;
         }
 
-        .form-group input {
+        .login-page .form-container .form-group input {
             width: 100%;
             padding: 12px 0;
             border: none;
@@ -88,23 +122,23 @@
             outline: none;
         }
 
-        .form-group input::placeholder {
+        .login-page .form-container .form-group input::placeholder {
             color: #9CA3AF;
         }
 
-        .form-group input:focus {
+        .login-page .form-container .form-group input:focus {
             background: transparent;
             box-shadow: 0 0 0 2px #A3BFFA;
         }
 
-        .form-text {
+        .login-page .form-container .form-text {
             font-size: 13px;
             color: #9CA3AF;
             margin-top: 6px;
             display: block;
         }
 
-        .form-check {
+        .login-page .form-container .form-check {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -112,18 +146,18 @@
             color: #374151;
         }
 
-        .form-check input {
+        .login-page .form-container .form-check input {
             width: 18px;
             height: 18px;
             cursor: pointer;
             accent-color: #A3BFFA;
         }
 
-        .form-check label {
+        .login-page .form-container .form-check label {
             cursor: pointer;
         }
 
-        .form-btn {
+        .login-page .form-container .form-btn {
             background: linear-gradient(90deg, #A3BFFA 0%, #7C9BF2 100%);
             color: #FFFFFF;
             padding: 14px;
@@ -135,38 +169,40 @@
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
 
-        .form-btn:hover {
-            background: linear-gradient(90deg, #7C9BF2 0%, #A3BFFA 100%); 
+        .login-page .form-container .form-btn:hover {
+            background: linear-gradient(90deg, #7C9BF2 0%, #A3BFFA 100%);
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 16px rgba(163, 191, 250, 0.7);
         }
 
-        .message {
+        .login-page .form-container .message {
             text-align: center;
             margin-bottom: 10px;
+            font-size: 14px;
+            color: #374151;
         }
 
         @media (max-width: 480px) {
-            .form-container {
+            .login-page .form-container {
                 padding: 25px;
             }
 
-            form {
+            .login-page .form-container form {
                 padding: 25px;
             }
 
-            .form-group input {
+            .login-page .form-container .form-group input {
                 font-size: 15px;
             }
 
-            .form-btn {
+            .login-page .form-container .form-btn {
                 font-size: 15px;
                 padding: 12px;
             }
         }
     </style>
 </head>
-<body>
+<body class="login-page">
     <%@include file="view/Navbar.jsp" %>
 
     <div class="form-container">
@@ -174,7 +210,7 @@
             String errorMessage = (String) session.getAttribute("errorMessage");
             if (errorMessage != null) {
         %>
-            <p class="message" style="color: red;"><%= errorMessage %></p>
+            <p class="message" style="color: #EF4444;"><%= errorMessage %></p>
         <% 
                 session.removeAttribute("errorMessage");
             } 

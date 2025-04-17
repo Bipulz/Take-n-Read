@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReadSphere</title>
-    <!-- Font Awesome CDN with a local fallback -->
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
           onerror="this.onerror=null; this.href='${pageContext.request.contextPath}/css/fontawesome/all.min.css';">
-    <!-- Google Fonts -->
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Navbar CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css?v=4">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 </head>
 <body>
-    <!-- Upper Navbar -->
+ 
     <div class="container">
         <div class="row">
             <div class="left">
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <!-- Main Navbar -->
+   
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
