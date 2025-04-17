@@ -16,15 +16,8 @@
  <%@ page import="model.connectionDAO, java.sql.Connection" %>
 
 
-<%-- <!-- intially tested the database connection -->
-<%
-    Connection conn = connectionDAO.getconn();
-    if (conn != null) {
-        out.print("Database connection successful: ");
-    } else {
-        out.print("Database connection failed.");
-    }
-%> --%>
+
+
 
     <div class="section">
         <div class="bg-img"></div>

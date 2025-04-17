@@ -34,3 +34,33 @@ CREATE TABLE `Order` (
     FOREIGN KEY (user_id) REFERENCES User(user_id)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+CREATE TABLE OrderBook (
+    order_id INT,
+    book_id INT,
+    PRIMARY KEY (order_id, book_id),
+    FOREIGN KEY (order_id) REFERENCES `Order`(order_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Book(book_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE UserBook (
+    user_id INT,
+    book_id INT,
+    PRIMARY KEY (user_id, book_id),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Book(book_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE AdminBook (
+    admin_id INT,
+    book_id INT,
+    PRIMARY KEY (admin_id, book_id),
+    FOREIGN KEY (admin_id) REFERENCES Admin(admin_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Book(book_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);

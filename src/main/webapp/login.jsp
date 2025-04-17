@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,6 +141,11 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
+        .message {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 480px) {
             .form-container {
                 padding: 25px;
@@ -164,6 +170,15 @@
     <%@include file="view/Navbar.jsp" %>
 
     <div class="form-container">
+        <% 
+            String errorMessage = (String) session.getAttribute("errorMessage");
+            if (errorMessage != null) {
+        %>
+            <p class="message" style="color: red;"><%= errorMessage %></p>
+        <% 
+                session.removeAttribute("errorMessage");
+            } 
+        %>
         <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="form-group">
                 <label for="email">Email Address</label>

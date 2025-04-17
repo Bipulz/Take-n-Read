@@ -22,7 +22,7 @@
                 <p class="book-author">Zorex</p>
                 <p class="book-category">New</p>
                 <div class="row">
-                    <a href="#" class="btn add-cart">Add to Cart</a>
+                    <a href="register.jsp" class="btn add-cart">Add to Cart</a>
                     <a href="#" class="btn view-dtl">View Details</a>
                     <span class="price">Rs. 199</span>
                 </div>

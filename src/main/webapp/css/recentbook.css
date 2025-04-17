@@ -1,4 +1,4 @@
-:root {
+ :root {
     --primary: #6B7280;
     --primary-dark: #4B5563;
     --secondary: #A3BFFA;
@@ -11,7 +11,7 @@
     --input-bg: #E5E7EB;
     --placeholder: #9CA3AF;
     --glow: rgba(163, 191, 250, 0.7);
-}
+} 
 
 .book-container {
     max-width: 1350px;

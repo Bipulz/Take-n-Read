@@ -1,16 +1,16 @@
-:root {
-    --primary: #6B7280;        /* Soft gray for buttons */
-    --primary-dark: #4B5563;   /* Darker soft gray for hover */
-    --secondary: #A3BFFA;      /* Soft sky blue for login button */
-    --secondary-dark: #7C9BF2; /* Darker sky blue for hover */
-    --accent: #F3E8FF;         /* Pale lavender for subtle highlights */
-    --background: #F9FAFB;     /* Very light gray background */
-    --text: #374151;           /* Soft charcoal for text */
-    --white: #FFFFFF;          /* Pure white for navbar */
-    --shadow: rgba(0, 0, 0, 0.04); /* Ultra-subtle shadow */
-    --input-bg: #E5E7EB;       /* Light gray for inputs */
-    --placeholder: #9CA3AF;    /* Mid-gray for placeholder */
-}
+/* :root {
+    --primary: #6B7280;        Soft gray for buttons
+    --primary-dark: #4B5563;   Darker soft gray for hover
+    --secondary: #A3BFFA;      Soft sky blue for login button
+    --secondary-dark: #7C9BF2; Darker sky blue for hover
+    --accent: #F3E8FF;         Pale lavender for subtle highlights
+    --background: #F9FAFB;     Very light gray background
+    --text: #374151;           Soft charcoal for text
+    --white: #FFFFFF;          Pure white for navbar
+    --shadow: rgba(0, 0, 0, 0.04); Ultra-subtle shadow
+    --input-bg: #E5E7EB;       Light gray for inputs
+    --placeholder: #9CA3AF;    Mid-gray for placeholder
+} 
 
 .section {
     position: relative;

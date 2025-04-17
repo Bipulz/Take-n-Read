@@ -2,22 +2,19 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class connectionDAO {
-
-    private static Connection conn;
-
-    public static Connection getconn() {
+    public static Connection getconn() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/essential_db",
+            return DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/essential_db?useSSL=false",
                 "root",
                 ""
             );
-        } catch (Exception e) {
-            
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL Driver not found", e);
         }
-        return conn;
     }
 }
