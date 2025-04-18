@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -18,6 +17,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private static final String ADMIN_EMAIL = "admin@gmail.com";
+    private static final String ADMIN_PASSWORD = "admin";
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         try {
@@ -25,12 +27,37 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("password");
             String remember = request.getParameter("remember");
 
+         
             if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
                 session.setAttribute("errorMessage", "Email and password are required.");
                 response.sendRedirect("login.jsp");
                 return;
             }
 
+        
+            if (ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password)) {
+            
+                User adminUser = new User();
+                adminUser.setEmail(email);
+                adminUser.setPassword(password); 
+                session.setAttribute("user", adminUser);
+
+            
+                if ("on".equals(remember)) {
+                    String token = UUID.randomUUID().toString();
+                    Cookie emailCookie = new Cookie("userEmail", email);
+                    Cookie tokenCookie = new Cookie("loginToken", token);
+                    emailCookie.setMaxAge(30 * 24 * 60 * 60); 
+                    tokenCookie.setMaxAge(30 * 24 * 60 * 60);
+                    response.addCookie(emailCookie);
+                    response.addCookie(tokenCookie);
+                }
+
+                response.sendRedirect("admin/home.jsp");
+                return;
+            }
+
+          
             UserDAO dao = new UserDAO(connectionDAO.getconn());
             User user = dao.getUserByEmail(email);
 
@@ -40,28 +67,27 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Verify password using BCrypt
+            
             if (!BCrypt.checkpw(password, user.getPassword())) {
                 session.setAttribute("errorMessage", "Invalid email or password.");
                 response.sendRedirect("login.jsp");
                 return;
             }
 
-            // Login successful, store user in session
+         
             session.setAttribute("user", user);
 
-            // Handle "Remember Me" with cookies
+        
             if ("on".equals(remember)) {
                 String token = UUID.randomUUID().toString();
                 Cookie emailCookie = new Cookie("userEmail", email);
                 Cookie tokenCookie = new Cookie("loginToken", token);
-                emailCookie.setMaxAge(30 * 24 * 60 * 60); // 30 days
-                tokenCookie.setMaxAge(30 * 24 * 60 * 60); // 30 days
+                emailCookie.setMaxAge(30 * 24 * 60 * 60); 
+                tokenCookie.setMaxAge(30 * 24 * 60 * 60); 
                 response.addCookie(emailCookie);
                 response.addCookie(tokenCookie);
             }
 
-           
             response.sendRedirect("dashboard.jsp");
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,18 +114,27 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (userEmail != null && loginToken != null) {
-            UserDAO dao = null;
-			try {
-				dao = new UserDAO(connectionDAO.getconn());
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-            User user = dao.getUserByEmail(userEmail);
-            if (user != null) {
-                session.setAttribute("user", user);
-                response.sendRedirect("dashboard.jsp");
-                return;
+            try {
+               
+                if (ADMIN_EMAIL.equals(userEmail)) {
+                    User adminUser = new User();
+                    adminUser.setEmail(userEmail);
+                    adminUser.setPassword(ADMIN_PASSWORD); 
+                    session.setAttribute("user", adminUser);
+                    response.sendRedirect("admin/home.jsp");
+                    return;
+                }
+
+                // Regular user
+                UserDAO dao = new UserDAO(connectionDAO.getconn());
+                User user = dao.getUserByEmail(userEmail);
+                if (user != null) {
+                    session.setAttribute("user", user);
+                    response.sendRedirect("dashboard.jsp");
+                    return;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 
