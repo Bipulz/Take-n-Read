@@ -129,12 +129,13 @@ body {
 }
 
 .navbar {
-    background: #4B5563;
+    background: #6B7280;
     padding: 12px 40px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: box-shadow 0.3s ease;
 }
 
 .nav-links {
@@ -294,6 +295,7 @@ body {
 
     .navbar {
         padding: 10px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .nav-links {

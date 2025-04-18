@@ -13,10 +13,6 @@
 <body>
     <%@include file="view/Navbar.jsp" %>
     
- <%@ page import="model.connectionDAO, java.sql.Connection" %>
-
-
-
 
 
     <div class="section">

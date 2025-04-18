@@ -7,48 +7,56 @@
     <title>Login - ReadSphere</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
     <style>
-        
         .login-page {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+            background: #FFFFFF;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
-        
         .login-page .search-form {
             max-width: 450px;
-            width: 100%;
-            padding: 8px;
-            border-radius: 25px;
-            background: #E5E7EB;
-            border: 2px solid #A3BFFA;
+            width: 90%;
+            padding: 10px;
+            border-radius: 50px;
+            background: #F7F7F9;
+            border: 1px solid #D1D5DB;
             display: flex;
             align-items: center;
+            margin: 1.5rem auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .login-page .search-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .login-page .search-form input {
-            padding: 10px 15px 10px 40px;
-            font-size: 15px;
+            padding: 12px 15px 12px 45px;
+            font-size: 16px;
             border: none;
             background: transparent;
             width: 100%;
-            color: #374151;
+            color: #1F2A44;
             font-family: 'Roboto', sans-serif;
             outline: none;
         }
 
         .login-page .search-form input::placeholder {
-            color: #9CA3AF;
+            color: #6B7280;
         }
 
         .login-page .search-form input:focus {
             background: #FFFFFF;
-            box-shadow: none;
+            border-radius: 50px;
+            box-shadow: 0 0 0 2px #3B82F6;
         }
 
         .login-page .form-container {
@@ -56,27 +64,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 30px 15px;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             margin: 2rem auto;
             background: #FFFFFF;
             border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-            transition: transform 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
         .login-page .form-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
         }
 
         .login-page .form-container form {
             width: 100%;
-            padding: 40px;
+            padding: 35px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
         }
 
         .login-page .form-container .form-group {
@@ -84,56 +92,65 @@
         }
 
         .login-page .form-container .form-group label {
-            font-size: 15px;
-            font-weight: 500;
-            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1F2A44;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
         }
 
         .login-page .form-container .input-wrapper {
             position: relative;
             display: flex;
             align-items: center;
-            background: #F3E8FF;
-            border-radius: 10px;
+            background: #F7F7F9;
+            border-radius: 12px;
             padding: 0 15px;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1px solid #D1D5DB;
         }
 
         .login-page .form-container .input-wrapper:hover {
-            background: #E5E7EB;
-            box-shadow: 0 0 8px rgba(163, 191, 250, 0.7);
+            background: #FFFFFF;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+            border-color: #3B82F6;
         }
 
         .login-page .form-container .input-wrapper i {
             color: #6B7280;
-            font-size: 18px;
+            font-size: 20px;
             margin-right: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .login-page .form-container .input-wrapper:hover i {
+            color: #3B82F6;
         }
 
         .login-page .form-container .form-group input {
             width: 100%;
-            padding: 12px 0;
+            padding: 14px 0;
             border: none;
             background: transparent;
             font-size: 16px;
-            color: #374151;
+            color: #1F2A44;
             outline: none;
+            font-family: 'Roboto', sans-serif;
         }
 
         .login-page .form-container .form-group input::placeholder {
-            color: #9CA3AF;
+            color: #6B7280;
         }
 
         .login-page .form-container .form-group input:focus {
             background: transparent;
-            box-shadow: 0 0 0 2px #A3BFFA;
+            box-shadow: none;
         }
 
         .login-page .form-container .form-text {
             font-size: 13px;
-            color: #9CA3AF;
+            color: #6B7280;
             margin-top: 6px;
             display: block;
         }
@@ -143,52 +160,79 @@
             align-items: center;
             gap: 10px;
             font-size: 15px;
-            color: #374151;
+            color: #1F2A44;
         }
 
         .login-page .form-container .form-check input {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            accent-color: #A3BFFA;
+            accent-color: #3B82F6;
+            border-radius: 4px;
         }
 
         .login-page .form-container .form-check label {
             cursor: pointer;
+            font-weight: 500;
         }
 
         .login-page .form-container .form-btn {
-            background: linear-gradient(90deg, #A3BFFA 0%, #7C9BF2 100%);
+            background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
             color: #FFFFFF;
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .login-page .form-container .form-btn:hover {
-            background: linear-gradient(90deg, #7C9BF2 0%, #A3BFFA 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(163, 191, 250, 0.7);
+            background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .login-page .form-container .form-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .login-page .form-container .form-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .login-page .form-container .message {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-size: 14px;
-            color: #374151;
+            color: #1F2A44;
+            background: #F7F7F9;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #D1D5DB;
         }
 
         @media (max-width: 480px) {
             .login-page .form-container {
-                padding: 25px;
+                padding: 20px;
+                max-width: 90%;
             }
 
             .login-page .form-container form {
-                padding: 25px;
+                padding: 20px;
             }
 
             .login-page .form-container .form-group input {
@@ -197,7 +241,12 @@
 
             .login-page .form-container .form-btn {
                 font-size: 15px;
-                padding: 12px;
+                padding: 14px;
+            }
+
+            .login-page .search-form {
+                max-width: 95%;
+                padding: 8px;
             }
         }
     </style>
@@ -210,7 +259,7 @@
             String errorMessage = (String) session.getAttribute("errorMessage");
             if (errorMessage != null) {
         %>
-            <p class="message" style="color: #EF4444;"><%= errorMessage %></p>
+            <p class="message" style="color: #EF4444; background: #FEE2E2;"><%= errorMessage %></p>
         <% 
                 session.removeAttribute("errorMessage");
             } 

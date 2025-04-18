@@ -1,16 +1,17 @@
 .section {
     position: relative;
-    min-height: 75vh;
+    min-height: 88vh;
     width: 100%;
     overflow: hidden;
     background: #F9FAFB;
     display: flex;
     align-items: center;
+    
 }
 
 .bg-img {
     position: absolute;
-    top: 0;
+    top: -2;
     left: 0;
     width: 100%;
     height: 100%;
