@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     background: #F9FAFB;
 }
@@ -8,7 +8,7 @@ body {
     padding: 15px 40px;
     background: #FFFFFF;
     border-bottom: 2px solid #A3BFFA;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .row {
@@ -38,7 +38,8 @@ body {
     font-size: 28px;
     font-weight: 700;
     margin: 0;
-    color: #374151;
+    color: #1F2A44;
+    font-family: 'Roboto', sans-serif;
 }
 
 .brand::after {
@@ -46,7 +47,7 @@ body {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     font-size: 20px;
-    color: #A3BFFA;
+    color: #3B82F6;
     margin-left: 8px;
     vertical-align: middle;
 }
@@ -54,12 +55,19 @@ body {
 .search-form {
     display: flex;
     align-items: center;
-    background: #E5E7EB;
+    background: #F7F7F9;
     padding: 8px;
-    border: 2px solid #A3BFFA;
+    border: 1px solid #D1D5DB;
     border-radius: 25px;
     max-width: 450px;
     width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.search-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .search-form input {
@@ -68,20 +76,23 @@ body {
     background: transparent;
     width: 100%;
     font-size: 15px;
-    color: #374151;
+    color: #1F2A44;
     font-family: 'Roboto', sans-serif;
+    border-radius: 25px;
+    outline: none;
 }
 
 .search-form input::placeholder {
-    color: #9CA3AF;
+    color: #6B7280;
 }
 
 .search-form input:focus {
-    outline: none;
     background: #FFFFFF;
+    box-shadow: 0 0 0 2px #3B82F6;
+    border-radius: 25px;
 }
 
-.button {
+.button, .nav-link-button {
     padding: 10px 20px;
     border: none;
     border-radius: 25px;
@@ -92,30 +103,35 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    background: none;
+    color: inherit;
 }
 
-.button i {
+.button i, .nav-link-button i {
     font-size: 14px;
 }
 
 .search-button {
-    background: #6B7280;
+    background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
     color: #FFFFFF;
 }
 
 .search-button:hover {
-    background: #4B5563;
-    box-shadow: 0 0 10px rgba(163, 191, 250, 0.7);
+    background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
 }
 
 .login-button {
-    background: #A3BFFA;
-    color: #374151;
+    background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+    color: #FFFFFF;
 }
 
 .login-button:hover {
-    background: #7C9BF2;
-    box-shadow: 0 0 10px rgba(163, 191, 250, 0.7);
+    background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
 }
 
 .register-button {
@@ -125,13 +141,36 @@ body {
 
 .register-button:hover {
     background: #4B5563;
-    box-shadow: 0 0 10px rgba(163, 191, 250, 0.7);
+    box-shadow: 0 8px 20px rgba(107, 114, 128, 0.4);
+    transform: translateY(-2px);
+}
+
+.profile-button {
+    background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+    color: #FFFFFF;
+}
+
+.profile-button:hover {
+    background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.cart-button {
+    background: #6B7280;
+    color: #FFFFFF;
+}
+
+.cart-button:hover {
+    background: #4B5563;
+    box-shadow: 0 8px 20px rgba(107, 114, 128, 0.4);
+    transform: translateY(-2px);
 }
 
 .navbar {
-    background: #6B7280;
+    background: #1F2A44;
     padding: 12px 40px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -152,7 +191,7 @@ body {
     position: relative;
 }
 
-.nav-links a {
+.nav-links a, .nav-link-button {
     text-decoration: none;
     color: #FFFFFF;
     font-weight: 500;
@@ -162,25 +201,26 @@ body {
     align-items: center;
     gap: 6px;
     border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
-.nav-links a:hover {
-    color: #A3BFFA;
+.nav-links a:hover, .nav-link-button:hover {
+    color: #60A5FA;
 }
 
 .nav-links li:nth-child(1) a::before {
     content: '\f015';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #60A5FA;
     font-size: 15px;
 }
 
-.nav-links li:nth-child(2) a::before {
+.nav-links li:nth-child(2) .nav-link-button::before {
     content: '\f02d';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #60A5FA;
     font-size: 15px;
 }
 
@@ -188,7 +228,7 @@ body {
     content: '\f013';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #60A5FA;
     font-size: 15px;
 }
 
@@ -196,57 +236,73 @@ body {
     content: '\f05a';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #60A5FA;
     font-size: 15px;
 }
 
-.dropdown > a::after {
+.dropdown .nav-link-button::after {
     content: '\f078';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     margin-left: 5px;
     font-size: 12px;
-    color: #A3BFFA;
+    color: #60A5FA;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
-    background: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+    background: linear-gradient(180deg, #FFFFFF 0%, #F7F7F9 100%);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     list-style: none;
-    padding: 8px 0;
-    min-width: 180px;
+    padding: 12px 0;
+    min-width: 200px;
     border-radius: 15px;
     top: 100%;
     left: 0;
     z-index: 1001;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .dropdown:hover .dropdown-menu {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .dropdown-menu li {
-    padding: 6px 15px;
+    padding: 8px 15px;
 }
 
 .dropdown-menu a {
-    color: #374151;
+    color: #1F2A44;
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-weight: 500;
     font-size: 14px;
     border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu a i {
+    font-size: 16px;
 }
 
 .dropdown-menu li:nth-child(1) a::before {
     content: '\f02f';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #3B82F6;
     font-size: 14px;
 }
 
@@ -254,7 +310,7 @@ body {
     content: '\f02d';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #3B82F6;
     font-size: 14px;
 }
 
@@ -262,18 +318,37 @@ body {
     content: '\f017';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #A3BFFA;
+    color: #3B82F6;
     font-size: 14px;
 }
 
 .dropdown-menu li:hover {
-    background: #F3E8FF;
+    background: #E5E7EB;
 }
 
 .dropdown-menu a:hover {
-    color: #4B5563;
+    color: #3B82F6;
 }
 
+.right .dropdown {
+    position: relative;
+}
+
+.right .dropdown-menu {
+    top: 100%;
+    right: 0;
+    left: auto;
+}
+
+.right .dropdown-menu li:nth-child(1) a::before {
+    content: none;
+}
+
+.right .dropdown-menu li:nth-child(3) a::before {
+    content: none;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
         padding: 10px 20px;
@@ -295,7 +370,6 @@ body {
 
     .navbar {
         padding: 10px 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .nav-links {
@@ -306,8 +380,13 @@ body {
     .dropdown-menu {
         position: static;
         width: 100%;
-        background: #F3E8FF;
+        background: #F7F7F9;
         border-radius: 10px;
+    }
+
+    .right .dropdown-menu {
+        position: static;
+        width: 100%;
     }
 }
 
@@ -316,7 +395,7 @@ body {
         font-size: 24px;
     }
 
-    .button {
+    .button, .nav-link-button {
         padding: 8px 15px;
         font-size: 13px;
     }
@@ -325,7 +404,7 @@ body {
         font-size: 14px;
     }
 
-    .nav-links a {
+    .nav-links a, .nav-link-button {
         font-size: 14px;
     }
 }

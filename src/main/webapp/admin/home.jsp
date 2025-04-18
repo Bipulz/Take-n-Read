@@ -202,7 +202,7 @@
     </nav>
 
     <div class="main-content">
-        <h1>Mai ho admin</h1>
+        <h1></h1>
         <div class="cards">
             <a href="addbook.jsp" class="card">
                 <i class="fas fa-plus-square"></i>

@@ -4,260 +4,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - ReadSphere</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
+    <title>Register - Take n' Read</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        .register-page {
+        * {
             margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: #FFFFFF;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #F9FAFB;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            color: #374151;
             overflow-x: hidden;
         }
 
-        .register-page .search-form {
-            max-width: 450px;
-            width: 90%;
-            padding: 10px;
-            border-radius: 50px;
-            background: #F7F7F9;
-            border: 1px solid #D1D5DB;
+
+        .logo {
             display: flex;
             align-items: center;
-            margin: 1.5rem auto;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            font-size: 26px;
+            font-weight: 700;
+            color: #374151;
         }
 
-        .register-page .search-form:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .logo i {
+            margin-right: 10px;
+            color: #A3BFFA;
+            font-size: 22px;
         }
 
-        .register-page .search-form input {
-            padding: 12px 15px 12px 45px;
-            font-size: 16px;
-            border: none;
-            background: transparent;
-            width: 100%;
-            color: #1F2A44;
-            font-family: 'Roboto', sans-serif;
-            outline: none;
+        nav {
+            background: #6B7280;
+            padding: 10px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .register-page .search-form input::placeholder {
-            color: #6B7280;
-        }
-
-        .register-page .search-form input:focus {
-            background: #FFFFFF;
-            border-radius: 50px;
-            box-shadow: 0 0 0 2px #3B82F6;
-        }
-
-        .register-page .form-container {
-            flex: 1;
+        .main-content {
+            padding: 30px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px 15px;
-            width: 100%;
-            max-width: 480px;
-            margin: 2rem auto;
-            background: #FFFFFF;
+            min-height: calc(100vh - 200px);
+        }
+
+        .form-container {
+            background: linear-gradient(135deg, #FFFFFF, #F9FAFB);
+            padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .register-page .form-container:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-        }
-
-        .register-page .form-container form {
+            box-shadow: 0 12px 28px rgba(55, 65, 81, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #E5E7EB;
+            max-width: 480px;
             width: 100%;
-            padding: 35px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .register-page .form-container .form-group {
-            text-align: left;
-        }
-
-        .register-page .form-container .form-group label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1F2A44;
-            display: block;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .register-page .form-container .input-wrapper {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.5s ease-out;
             position: relative;
+        }
+
+        .form-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(55, 65, 81, 0.4), 0 8px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .form-container h2 {
+            font-size: 26px;
+            color: #374151;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .divider {
+            height: 4px;
+            background: linear-gradient(to right, #A3BFFA, #FFFFFF);
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .form-group label span {
+            color: #F87171;
+        }
+
+        .form-group input:focus + label {
+            transform: translateY(-2px);
+            color: #A3BFFA;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #374151;
+            background: #FFFFFF;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #A3BFFA;
+            background: #F9FAFB;
+            box-shadow: 0 0 8px rgba(163, 191, 250, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 12px;
+            top: 40px;
+            color: #A3BFFA;
+            font-size: 16px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-group input:focus ~ i {
+            color: #7C9BF2;
+            transform: scale(1.1);
+        }
+
+        .form-check {
             display: flex;
             align-items: center;
-            background: #F7F7F9;
-            border-radius: 12px;
-            padding: 0 15px;
-            transition: all 0.3s ease;
-            border: 1px solid #D1D5DB;
+            gap: 10px;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 20px;
         }
 
-        .register-page .form-container .input-wrapper:hover {
-            background: #FFFFFF;
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
-            border-color: #3B82F6;
-        }
-
-        .register-page .form-container .input-wrapper i {
-            color: #6B7280;
-            font-size: 20px;
-            margin-right: 12px;
-            transition: color 0.3s ease;
-        }
-
-        .register-page .form-container .input-wrapper:hover i {
-            color: #3B82F6;
-        }
-
-        .register-page .form-container .form-group input[type="text"],
-        .register-page .form-container .form-group input[type="email"],
-        .register-page .form-container .form-group input[type="tel"],
-        .register-page .form-container .form-group input[type="password"] {
-            width: 100%;
-            padding: 14px 0;
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            color: #1F2A44;
-            outline: none;
-        }
-
-        .register-page .form-container .form-group input::placeholder {
-            color: #6B7280;
-        }
-
-        .register-page .form-container .form-group input:focus {
-            background: transparent;
-            box-shadow: none;
-        }
-
-        .register-page .form-container .form-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+        .form-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            accent-color: #3B82F6;
-            margin-right: 12px;
+            accent-color: #A3BFFA;
             border-radius: 4px;
         }
 
-        .register-page .form-container .form-btn {
-            background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+        .form-check label {
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #6B7280;
             color: #FFFFFF;
-            padding: 16px;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .register-page .form-container .form-btn:hover {
-            background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 100%);
+        .submit-btn:hover {
+            background: #7C9BF2;
+            box-shadow: 0 6px 12px rgba(163, 191, 250, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
         }
 
-        .register-page .form-container .form-btn::before {
+        .submit-btn::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
         }
 
-        .register-page .form-container .form-btn:hover::before {
-            width: 300px;
-            height: 300px;
+        .submit-btn:hover::before {
+            left: 100%;
         }
 
-        .register-page .form-container .message {
-            text-align: center;
-            margin-bottom: 15px;
+        .submit-btn i {
+            margin-right: 8px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
             font-size: 14px;
-            color: #1F2A44;
-            background: #F7F7F9;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #D1D5DB;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert.error {
+            background: #FEE2E2;
+            border: 1px solid #F87171;
+            color: #B91C1C;
+        }
+
+        .alert.success {
+            background: #E0F2FE;
+            border: 1px solid #A3BFFA;
+            color: #1E40AF;
+        }
+
+        .alert i {
+            font-size: 18px;
+        }
+
+        .alert a {
+            color: #A3BFFA;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .alert a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #FFFFFF;
+            padding: 15px 40px;
+            text-align: center;
+            color: #6B7280;
+            font-size: 14px;
+            border-top: 1px solid #A3BFFA;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 20px;
+            }
+
+            nav {
+                padding: 8px 20px;
+            }
+
+            .main-content {
+                padding: 25px 15px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-container h2 {
+                font-size: 22px;
+            }
+
+            .form-group input {
+                padding: 8px 8px 8px 36px;
+                font-size: 13px;
+            }
+
+            .form-group i {
+                top: 38px;
+                font-size: 14px;
+                left: 10px;
+            }
+
+            .submit-btn {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .alert {
+                font-size: 13px;
+                padding: 12px;
+            }
         }
 
         @media (max-width: 480px) {
-            .register-page .form-container {
-                padding: 20px;
-                max-width: 90%;
+            .logo {
+                font-size: 22px;
             }
 
-            .register-page .form-container form {
-                padding: 20px;
+            .main-content {
+                padding: 20px 10px;
             }
 
-            .register-page .form-container .form-group input {
-                font-size: 15px;
+            .form-container {
+                padding: 15px;
             }
 
-            .register-page .form-container .form-btn {
-                font-size: 15px;
-                padding: 14px;
+            .form-container h2 {
+                font-size: 20px;
+                margin-bottom: 15px;
             }
 
-            .register-page .search-form {
-                max-width: 95%;
+            .form-group label {
+                font-size: 13px;
+            }
+
+            .form-group input {
+                font-size: 12px;
+                padding: 8px 8px 8px 36px;
+            }
+
+            .form-group i {
+                top: 38px;
+                font-size: 13px;
+                left: 10px;
+            }
+
+            .submit-btn {
+                font-size: 12px;
                 padding: 8px;
+            }
+
+            .alert {
+                font-size: 12px;
+                padding: 10px;
+            }
+
+            footer {
+                padding: 12px 20px;
+                font-size: 12px;
             }
         }
     </style>
 </head>
-<body class="register-page">
-    <%@include file="view/Navbar.jsp" %>
+<body>
 
-    <div class="form-container">
-        <% 
-            String errorMessage = (String) session.getAttribute("errorMessage");
-            String successMessage = (String) session.getAttribute("successMessage");
-            if (errorMessage != null) {
-        %>
-            <p class="message" style="color: #EF4444; background: #FEE2E2;"><%= errorMessage %></p>
-        <% 
-                session.removeAttribute("errorMessage");
-            } 
-            if (successMessage != null) {
-        %>
-            <p class="message" style="color: #10B981; background: #D1FAE5;"><%= successMessage %></p>
-        <% 
-                session.removeAttribute("successMessage");
-            } 
-        %>
-        <form action="register" method="post">
-            <div class="form-group">
-                <label for="full-name">Full Name</label>
-                <div class="input-wrapper">
+ <%@include file="view/Navbar.jsp" %>
+
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Create Account</h2>
+            <div class="divider"></div>
+            <% 
+                String errorMessage = (String) session.getAttribute("errorMessage");
+                String successMessage = (String) session.getAttribute("successMessage");
+                if (errorMessage != null) {
+            %>
+                <div class="alert error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <%= errorMessage %>
+                    <a href="${pageContext.request.contextPath}/register.jsp">Dismiss</a>
+                </div>
+            <% 
+                    session.removeAttribute("errorMessage");
+                } 
+                if (successMessage != null) {
+            %>
+                <div class="alert success">
+                    <i class="fas fa-check-circle"></i>
+                    <%= successMessage %>
+                    <a href="login.jsp">Continue to Login</a>
+                </div>
+            <% 
+                    session.removeAttribute("successMessage");
+                } 
+            %>
+            <form action="register" method="post">
+                <div class="form-group">
+                    <label for="full-name">Full Name<span>*</span></label>
                     <i class="fas fa-user"></i>
                     <input 
                         type="text" 
@@ -268,10 +407,8 @@
                         required
                     >
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <div class="input-wrapper">
+                <div class="form-group">
+                    <label for="email">Email Address<span>*</span></label>
                     <i class="fas fa-envelope"></i>
                     <input 
                         type="email" 
@@ -282,10 +419,8 @@
                         required
                     >
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <div class="input-wrapper">
+                <div class="form-group">
+                    <label for="phone">Phone Number<span>*</span></label>
                     <i class="fas fa-phone"></i>
                     <input 
                         type="tel" 
@@ -296,10 +431,8 @@
                         required
                     >
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
+                <div class="form-group">
+                    <label for="password">Password<span>*</span></label>
                     <i class="fas fa-lock"></i>
                     <input 
                         type="password" 
@@ -309,19 +442,21 @@
                         required
                     >
                 </div>
-            </div>
-            <div class="form-group">
-                <div style="display: flex; align-items: center;">
+                <div class="form-check">
                     <input 
                         type="checkbox" 
                         id="accept-terms" 
                         name="acceptTerms"
                     >
-                    <label for="accept-terms" style="font-weight: 500; font-size: 15px;">I accept the terms and conditions</label>
+                    <label for="accept-terms">I accept the terms and conditions</label>
                 </div>
-            </div>
-            <button type="submit" class="form-btn">Create Account</button>
-        </form>
+                <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i>Create Account</button>
+            </form>
+        </div>
     </div>
+
+    <footer>
+        © 2025 Take n' Read. All rights reserved.
+    </footer>
 </body>
 </html>
