@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/book.css">
 </head>
 <body>
-    <!-- Recent Books Section -->
+    
     <div class="book-container recent-books">
         <h3>Recent Books</h3>
         <div class="books-grid">
@@ -96,7 +96,7 @@
     </div>
     <div class="section-divider"></div>
 
-    <!-- New Books Section -->
+
     <div class="book-container new-books">
         <h3>New Books</h3>
         <div class="books-grid">
@@ -185,7 +185,7 @@
     </div>
     <div class="section-divider"></div>
 
-    <!-- Old Books Section -->
+  
     <div class="book-container old-books">
         <h3>Old Books</h3>
         <div class="books-grid">

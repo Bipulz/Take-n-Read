@@ -514,9 +514,9 @@
             <table id="orderTable">
                 <thead>
                     <tr>
-                        <th class="order-id" style="min-width: 50px;">Order Id</th> <!-- Decreased from 60px -->
+                        <th class="order-id" style="min-width: 50px;">Order Id</th>
                         <th class="name" style="min-width: 140px;">Name</th>
-                        <th class="email" style="min-width: 350px;">EMail</th> <!-- Increased from 300px -->
+                        <th class="email" style="min-width: 350px;">EMail</th> 
                         <th class="address" style="min-width: 200px;">Address</th>
                         <th style="min-width: 120px;">Ph No</th>
                         <th class="book-name" style="min-width: 160px;">Book Name</th>
