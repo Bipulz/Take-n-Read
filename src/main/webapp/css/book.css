@@ -37,6 +37,7 @@ body {
     position: relative;
 }
 
+
 .book-container h3::after {
     content: '';
     position: absolute;
