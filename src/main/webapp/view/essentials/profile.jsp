@@ -207,6 +207,7 @@
     </style>
 </head>
 <body>
+<%@include file="../utils/Navbar.jsp" %>
     <div class="main-content">
         <div class="profile-container">
             <div class="profile-header">
@@ -247,9 +248,6 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        © 2025 All rights reserved.
-    </footer>
+<%@include file="../utils/footer.jsp" %>
 </body>
 </html>

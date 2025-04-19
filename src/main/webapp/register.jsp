@@ -364,7 +364,7 @@
 </head>
 <body>
 
- <%@include file="view/Navbar.jsp" %>
+ <%@include file="view/utils/Navbar.jsp" %>
 
     <div class="main-content">
         <div class="form-container">

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <%@include file="./view/Navbar.jsp" %>
+    <%@include file="./view/utils/Navbar.jsp" %>
 
     <div class="section">
         <div class="bg-img"></div>
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <%@include file="view/book.jsp" %>
-    <%@include file="view/footer.jsp" %>
+    <%@include file="view/BookUtils/book.jsp" %>
+    <%@include file="view/utils/footer.jsp" %>
 </body>	
 </html>

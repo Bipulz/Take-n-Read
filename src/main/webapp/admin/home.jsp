@@ -198,7 +198,7 @@
     </header>
 
     <nav>
-        <a href="adminDashboard.jsp"><i class="fas fa-home"></i> Home</a>
+        <a href="home.jsp"><i class="fas fa-home"></i> Home</a>
     </nav>
 
     <div class="main-content">
@@ -219,12 +219,12 @@
                 <h3>Order</h3>
                 <hr class="divider">
             </a>
-            <a href="../index.jsp" class="card">
-                <i class="fas fa-sign-out-alt"></i>
-                <h3>Logout</h3>
-                <hr class="divider">
-            </a>
-        </div>
+				<a href="${pageContext.request.contextPath}/logout" class="card">
+				    <i class="fas fa-sign-out-alt"></i>
+				    <h3>Logout</h3>
+				    <hr class="divider">
+				</a>
+</div>
     </div>
 
     <footer>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Details - Palpasa Cafe</title>
+    <title>Book Details - Karnali Blues</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -31,7 +31,7 @@
             box-shadow: 0 12px 28px rgba(55, 65, 81, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             display: flex;
-            border-left: 6px solid #374151; /* Darker left border */
+            border-left: 6px solid #374151;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -41,7 +41,7 @@
         }
 
         .image-container {
-            background: linear-gradient(135deg, #F9FAFB, #E5E7EB); /* Light gradient for image container */
+            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
             width: 40%;
             display: flex;
             align-items: center;
@@ -127,11 +127,6 @@
             transition: background 0.3s ease, transform 0.3s ease;
         }
 
-        .category-tag.new {
-            background: #A3BFFA;
-            color: #FFFFFF;
-        }
-
         .category-tag.old {
             background: #6B7280;
             color: #FFFFFF;
@@ -181,46 +176,24 @@
             letter-spacing: 0.5px;
         }
 
-        .add-cart-btn {
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 25px;
+        .seller-details {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .seller-details h3 {
+            font-size: 1.5rem;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .seller-details p {
             font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease, opacity 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #6B7280;
-            color: #FFFFFF;
-            align-self: flex-end;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .add-cart-btn:hover {
-            background: #7C9BF2;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .add-cart-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .add-cart-btn:hover::before {
-            left: 100%;
+            color: #6B7280;
+            margin: 0.5rem 0;
         }
 
         footer {
@@ -243,12 +216,7 @@
                 max-width: 90%;
             }
 
-            .image-container {
-                width: 100%;
-                padding: 2rem;
-            }
-
-            .details-container {
+            .image-container, .details-container {
                 width: 100%;
                 padding: 2rem;
             }
@@ -261,107 +229,46 @@
                 font-size: 1rem;
             }
 
-            .category-tags {
-                gap: 10px;
-            }
-
-            .category-tag {
-                font-size: 0.8rem;
-                padding: 4px 10px;
-            }
-
-            .features {
-                font-size: 0.9rem;
-                gap: 15px;
-            }
-
-            .features i {
-                font-size: 1rem;
-            }
-
             .price {
                 font-size: 1.5rem;
             }
 
-            .add-cart-btn {
-                font-size: 0.9rem;
-                padding: 10px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 20px 10px;
-            }
-
-            .details-container h2 {
-                font-size: 1.75rem;
-            }
-
-            .book-author, .book-category {
-                font-size: 0.9rem;
-            }
-
-            .category-tags {
-                gap: 8px;
-            }
-
-            .category-tag {
-                font-size: 0.7rem;
-                padding: 3px 8px;
-            }
-
-            .features {
-                font-size: 0.8rem;
-                gap: 10px;
-            }
-
-            .features i {
-                font-size: 0.9rem;
-            }
-
-            .price {
+            .seller-details h3 {
                 font-size: 1.25rem;
-            }
-
-            .add-cart-btn {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-
-            footer {
-                padding: 12px 20px;
-                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <%@include file="./Navbar.jsp" %>
+    <%@include file="../utils/Navbar.jsp" %>
     <div class="main-content">
         <div class="book-details-container">
             <div class="image-container">
-                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/palpasa-cafe.jpg">
+                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/karnali-blues.jpg">
             </div>
             <div class="details-container">
                 <div>
-                    <h2>Palpasa Cafe</h2>
-                    <p class="book-author">By Narayan Wagle</p>
+                    <h2>Karnali Blues</h2>
+                    <p class="book-author">By Buddhisagar</p>
                     <p class="book-category"><i class="fas fa-bookmark"></i> Contemporary Fiction</p>
                     <div class="category-tags">
-                        <span class="category-tag new">New</span>
-<!--                         <span class="category-tag old">Old</span> -->
+                        <span class="category-tag old">Old</span>
                     </div>
                     <div class="features">
                         <span><i class="fas fa-undo"></i> Return Available</span>
                         <span><i class="fas fa-truck"></i> Free Shipping</span>
                     </div>
-                    <p class="price">Rs. 350</p>
+                    <p class="price">Rs. 400</p>
                 </div>
-                <a href="#" class="add-cart-btn"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                <div class="seller-details">
+                    <h3>Seller Information</h3>
+                    <p><strong>Name:</strong> Ram Dhakal</p>
+                    <p><strong>Email:</strong> Ramdhakal@gmail.com</p>
+                    <p><strong>Contact Instructions:</strong> Please email me to arrange the purchase.</p>
+                </div>
             </div>
         </div>
     </div>
-    <%@include file="./footer.jsp" %>
+ <%@include file="../utils/footer.jsp" %>
 </body>
 </html>

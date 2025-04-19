@@ -494,12 +494,12 @@
                             <i class="fas fa-user"></i> <%= displayName %>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="${pageContext.request.contextPath}/profile.jsp" data-hover="Visit Profile"><span><i class="fas fa-user-circle"></i> Profile</span></a></li>
-                            <li><hr style="border: 1px solid #E5E7EB; margin: 8px 0;"></li>
-                            <li><a href="${pageContext.request.contextPath}/logout" data-hover="Logout"><span><i class="fas fa-sign-out-alt"></i> Logout</span></a></li>
-                        </ul>
+						    <li><a href="${pageContext.request.contextPath}/view/essentials/profile.jsp" data-hover="Visit Profile"><span><i class="fas fa-user-circle"></i> Profile</span></a></li>
+						    <li><hr style="border: 1px solid #E5E7EB; margin: 8px 0;"></li>
+						    <li><a href="${pageContext.request.contextPath}/logout" data-hover="Logout"><span><i class="fas fa-sign-out-alt"></i> Logout</span></a></li>
+						</ul>
                     </div>
-                    <a href="${pageContext.request.contextPath}/cart.jsp" class="button cart-button"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a href="${pageContext.request.contextPath}/view/order/cart.jsp" class="button cart-button"><i class="fas fa-shopping-cart"></i> Cart</a>
                 <% 
                     } 
                 %>

@@ -48,7 +48,7 @@
 	                <span class="price"><i class="fas fa-tag"></i> Rs. 350</span>
 	                <div class="row">
 	                    <a href="#" class="btn add-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-	                   <a href="${pageContext.request.contextPath}/view/viewDetailsStatic-1.jsp" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+	                   <a href="${pageContext.request.contextPath}/view/BookUtils/viewDetailsStatic-1.jsp" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
 	                </div>
 	            </div>
 	        </div>
@@ -238,7 +238,7 @@
 	                <span class="price"><i class="fas fa-tag"></i> Rs. 400</span>
 	                <div class="row">
 
-	                  <a href="${pageContext.request.contextPath}/view/viewDetailsStatic-2.jsp" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+	                  <a href="${pageContext.request.contextPath}/view/BookUtils/viewDetailsStatic-2.jsp" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
 	                </div>
 	            </div>
 	        </div>
