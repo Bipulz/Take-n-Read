@@ -12,19 +12,26 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Invalidate the session
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // Clear session
+            session.invalidate();
         }
 
-        // Clear "Remember Me" cookies
-        Cookie emailCookie = new Cookie("userEmail", "");
-        Cookie tokenCookie = new Cookie("loginToken", "");
-        emailCookie.setMaxAge(0);
-        tokenCookie.setMaxAge(0);
-        response.addCookie(emailCookie);
-        response.addCookie(tokenCookie);
+        // Clear all relevant cookies
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("userEmail".equals(cookie.getName()) || "loginToken".equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+            }
+        }
 
-        response.sendRedirect("login.jsp");
+        // Redirect to login page
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
 }

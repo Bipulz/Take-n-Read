@@ -20,4 +20,9 @@ public class User {
     public void setPhno(String phno) { this.phno = phno; }
     public boolean isAcceptTerms() { return acceptTerms; }
     public void setAcceptTerms(boolean acceptTerms) { this.acceptTerms = acceptTerms; }
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", phno=" + phno
+				+ ", acceptTerms=" + acceptTerms + "]";
+	}
 }

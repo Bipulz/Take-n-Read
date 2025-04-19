@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
                 adminUser.setEmail(email);
                 adminUser.setPassword(password); 
                 session.setAttribute("user", adminUser);
+              
 
             
                 if ("on".equals(remember)) {
@@ -88,7 +89,7 @@ public class LoginServlet extends HttpServlet {
                 response.addCookie(tokenCookie);
             }
 
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect("index.jsp");
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("errorMessage", "Error: " + e.getMessage());
@@ -130,7 +131,7 @@ public class LoginServlet extends HttpServlet {
                 User user = dao.getUserByEmail(userEmail);
                 if (user != null) {
                     session.setAttribute("user", user);
-                    response.sendRedirect("dashboard.jsp");
+                    response.sendRedirect("index.jsp");
                     return;
                 }
             } catch (SQLException e) {
