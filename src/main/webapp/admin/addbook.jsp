@@ -425,7 +425,7 @@
 <body>
     <header>
         <div class="logo">
-            <i class="fas fa-book"></i>
+            <i class=""></i>
             Take n' Read
         </div>
     </header>
