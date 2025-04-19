@@ -409,7 +409,7 @@
 <body>
     <header>
         <div class="logo">
-            <i class="fas fa-book"></i>
+            <i class="fa-solid fa-book-open-reader"></i>
             Take n' Read
         </div>
     </header>

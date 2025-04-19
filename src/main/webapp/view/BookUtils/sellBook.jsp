@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Book - Take n' Read</title>
+    <title>Sell Book - Take n' Read</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -21,63 +21,7 @@
             color: #374151;
         }
 
-        header {
-            background: #FFFFFF;
-            padding: 12px 40px;
-            border-bottom: 2px solid;
-            border-image: linear-gradient(to right, #A3BFFA, #7C9BF2) 1;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 26px;
-            font-weight: 700;
-            color: #374151;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: #A3BFFA;
-            font-size: 22px;
-        }
-
-        nav {
-            background: #6B7280;
-            padding: 10px 40px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top Ascending sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav a {
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        nav a:hover {
-            background: #A3BFFA;
-            color: #FFFFFF;
-        }
-
-        nav a i {
-            color: #A3BFFA;
-            font-size: 14px;
-        }
-
+   
         .main-content {
             padding: 30px 20px;
             max-width: 1400px;
@@ -149,14 +93,12 @@
             color: #F87171;
         }
 
-        .form-group input:focus + label,
-        .form-group select:focus + label {
+        .form-group input:focus + label {
             transform: translateY(-2px);
             color: #A3BFFA;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             width: 100%;
             padding: 10px 10px 10px 40px;
             border: 1px solid #E5E7EB;
@@ -168,8 +110,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             outline: none;
             border-color: #A3BFFA;
             background: #F9FAFB;
@@ -185,8 +126,7 @@
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        .form-group input:focus ~ i,
-        .form-group select:focus ~ i {
+        .form-group input:focus ~ i {
             color: #7C9BF2;
             transform: scale(1.1);
         }
@@ -327,8 +267,7 @@
                 font-size: 22px;
             }
 
-            .form-group input,
-            .form-group select {
+            .form-group input {
                 padding: 8px 8px 8px 36px;
                 font-size: 13px;
             }
@@ -383,8 +322,7 @@
                 font-size: 13px;
             }
 
-            .form-group input,
-            .form-group select {
+            .form-group input {
                 font-size: 12px;
                 padding: 8px 8px 8px 36px;
             }
@@ -424,22 +362,13 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-book-open-reader"></i>
-            Take n' Read
-        </div>
-    </header>
-
-    <nav>
-        <a href="home.jsp"><i class="fas fa-home"></i> Home</a>
-    </nav>
+<%@include file="../utils/Navbar.jsp" %>
 
     <div class="main-content">
         <div class="form-container">
-            <h2>Edit Book</h2>
+            <h2>Sell Your Book</h2>
             <div class="divider"></div>
-            <form action="editBookServlet" method="post" enctype="multipart/form-data">
+            <form action="sellBookServlet" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="bookName">Book Name<span>*</span></label>
                     <i class="fas fa-book"></i>
@@ -455,46 +384,19 @@
                     <span class="rs-prefix">Rs</span>
                     <input type="number" id="price" name="price" step="0.01" required>
                 </div>
-                <div class="form-group">
-                    <label for="category">Book Category</label>
-                    <i class="fas fa-tags"></i>
-                    <select id="category" name="category">
-                        <option value="" disabled selected>--select--</option>
-                        <option value="fiction">Fiction</option>
-                        <option value="non-fiction">Non-Fiction</option>
-                        <option value="science">Science</option>
-                        <option value="history">History</option>
-                        <option value="biography">Biography</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="mystery">Mystery</option>
-                        <option value="romance">Romance</option>
-                        <option value="thriller">Thriller</option>
-                        <option value="self-help">Self-Help</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="status">Book Status</label>
-                    <i class="fas fa-info-circle"></i>
-                    <select id="status" name="status">
-                        <option value="" disabled selected>--select--</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                </div>
                 <div class="form-group file-group">
-                    <label for="photo">Upload Photo</label>
-                    <input type="file" id="photo" name="photo" accept="image/*">
+                    <label for="photo">Upload Photo<span>*</span></label>
+                    <input type="file" id="photo" name="photo" accept="image/*" required>
                     <label for="photo" class="file-label">Choose File</label>
                     <span class="file-name"></span>
                 </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-check"></i>Confirm and Save Book</button>
+                <button type="submit" class="submit-btn"><i class="fas fa-shopping-cart"></i>Sell Book</button>
             </form>
         </div>
+        
     </div>
 
-    <footer>
-        © 2025 Take n' Read. All rights reserved.
-    </footer>
+		 <%@include file="../utils/footer.jsp" %>
 
     <script>
         const fileInput = document.getElementById('photo');

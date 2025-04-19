@@ -459,10 +459,11 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="row">
             <div class="left">
-                <h3 class="brand"><i class="fas fa-book"></i> Take n' Read</h3>
+                <h3 class="brand"><i class="fa-solid fa-book-open-reader"></i> Take n' Read</h3>
             </div>
             <div class="middle">
                 <form class="search-form" role="search" action="${pageContext.request.contextPath}/search" method="get">
@@ -517,9 +518,9 @@
                     <li><a href="#"><i class="fas fa-clock"></i> Recent Book</a></li>
                 </ul>
             </li>
-            <li><a href="#"><i class="fas fa-cogs"></i> Our Services</a></li>
-            <li><a href="#"><i class="fas fa-tools"></i> Manage</a></li>
-            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+         
+            <li><a href="${pageContext.request.contextPath}/view/essentials/userFeatures.jsp"><i class="fas fa-tools"></i> services</a></li>
+            <li><a href="${pageContext.request.contextPath}/view/essentials/aboutUs.jsp"><i class="fas fa-info-circle"></i> About Us</a></li>
         </ul>
     </nav>
 </body>
