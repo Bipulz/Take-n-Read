@@ -73,11 +73,11 @@ public class RegisterServlet extends HttpServlet {
             us.setEmail(email);
             us.setPhno(phno);
             us.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-            us.setAddress(address); // Can be null
-            us.setCity(city); // Can be null
-            us.setState(state); // Can be null
-            us.setLandmark(null); // Not in form
-            us.setZip(null); // Not in form
+            us.setAddress(address);
+            us.setCity(city); 
+            us.setState(state); 
+            us.setLandmark(null); 
+            us.setZip(null); 
             us.setAcceptTerms("on".equals(acceptTerms));
 
             // Register user

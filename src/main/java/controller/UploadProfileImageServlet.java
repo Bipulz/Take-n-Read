@@ -17,7 +17,7 @@ import model.connectionDAO;
 @WebServlet("/updateProfileAndImage")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
                  maxFileSize = 1024 * 1024 * 10,      // 10MB
-                 maxRequestSize = 1024 * 1024 * 50)   // 50MB
+                 maxRequestSize = 1024 * 1024 * 50)   // 50MB  
 public class UploadProfileImageServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
 
@@ -114,7 +114,7 @@ public class UploadProfileImageServlet extends HttpServlet {
 
             if (success) {
                 User refreshedUser = dao.getUserByEmail(user.getEmail());
-                session.setAttribute("user", refreshedUser);
+                session.setAttribute("user", refreshedUser);  
                 session.setAttribute("successMessage", "Profile and image updated successfully!");
                 System.out.println("Profile updated for email: " + user.getEmail() + ", image: " + (dbFilePath != null ? dbFilePath : "unchanged"));
             } else {

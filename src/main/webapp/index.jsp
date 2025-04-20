@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="model.User" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,31 +10,36 @@
 </head>
 <body>
 
-    <%@include file="./view/utils/Navbar.jsp" %>
+    <%@ include file="./view/utils/Navbar.jsp" %>
 
     <div class="section">
         <div class="bg-img"></div>
         <div class="overlay">
             <div class="content">
-                <% 
-                    String message = "Discover Your Next Favorite Book! Log in to explore our vast collection.";
+                <%
+                    User userr = (User) session.getAttribute("user");
                     String displayName = "Guest";
-                    try {
-                        if (user != null) {
-                            displayName = user.getName() != null && !user.getName().isEmpty() ? user.getName() : user.getEmail();
-                        }
-                    } catch (Exception e) {
-                        displayName = "Guest";
+
+                    if (userr != null) {
+                        displayName = (user.getName() != null && !user.getName().isEmpty()) ? user.getName() : user.getEmail();
+                %>
+                        <h1>Welcome back, <%= displayName %>!</h1>
+                     <p>Explore your personalized library and discover something new.</p>
+                <%
+                    } else {
+                %>
+                        <h1>Welcome to Take n' Read </h1>
+                       <p> "Discover Your Next Favorite Book! Log in to explore our vast collection.</p>
+
+                <%
                     }
                 %>
-<h1><%= user == null ? "Welcome to Take n' Read" : "Welcome back, " + displayName + "!" %></h1>
-<p><%= "Explore your personalized library and discover something new." %></p>
-
+                
             </div>
         </div>
     </div>
 
-    <%@include file="view/BookUtils/book.jsp" %>
-    <%@include file="view/utils/footer.jsp" %>
-</body>	
+    <%@ include file="view/BookUtils/book.jsp" %>
+    <%@ include file="view/utils/footer.jsp" %>
+</body>
 </html>
