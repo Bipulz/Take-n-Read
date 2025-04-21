@@ -210,7 +210,7 @@
             line-height: 1.6;
         }
 
-        .timeline-section {
+        .overview-section {
             max-width: 1100px;
             margin: 0 auto 80px;
             padding: 30px;
@@ -219,7 +219,7 @@
             animation-delay: 0.9s;
         }
 
-        .timeline-section h2 {
+        .overview-section h2 {
             font-size: 36px;
             font-weight: 600;
             color: #2D3748;
@@ -311,6 +311,168 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
+        .team-section {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        .team-section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #2D3748;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        .team-list {
+            background: linear-gradient(135deg, #FFFFFF, #F9FAFB);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .team-list:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+        }
+
+        .team-list ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .team-list li {
+            font-size: 18px;
+            color: #2D3748;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .contact-section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #2D3748;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: linear-gradient(135deg, #FFFFFF, #F9FAFB);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-form:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+        }
+
+        .contact-form h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2D3748;
+            margin-bottom: 20px;
+        }
+
+        .contact-form label {
+            font-size: 14px;
+            color: #4B5563;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2D3748;
+            background: #F9FAFB;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #A1BFFA;
+            outline: none;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 12px;
+            background: #A1BFFA;
+            border: none;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background: #4DB6AC;
+        }
+
+        .contact-form .success-message {
+            display: none;
+            color: #4DB6AC;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .contact-map {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 80px 15px;
@@ -345,6 +507,10 @@
                 font-size: 16px;
             }
 
+            .overview-section {
+                padding: 20px;
+            }
+
             .timeline::before {
                 left: 25px;
             }
@@ -365,14 +531,60 @@
                 height: 40px;
                 font-size: 20px;
             }
+
+            .team-section {
+                padding: 20px;
+            }
+
+            .team-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section {
+                padding: 20px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-map iframe {
+                height: 300px;
+            }
         }
     </style>
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const successMessage = document.querySelector('.success-message');
+
+            if (name === '' || email === '' || message === '') {
+                alert('All fields must be filled, and message cannot be empty!');
+                return false;
+            }
+
+            successMessage.style.display = 'block';
+            successMessage.textContent = 'Message sent successfully!';
+            document.querySelector('.contact-form form').reset();
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+            return true;
+        }
+    </script>
 </head>
 <body>
     <%@include file="../utils/Navbar.jsp" %>
-
     <div class="hero-section">
-        <h1>Welcome to Take n' Read</h1>
+        <h1>Take n' Read</h1>
         <p>A vibrant community where book lovers buy, sell, and share stories, connecting through the love of literature.</p>
     </div>
 
@@ -404,29 +616,75 @@
 
         <div class="divider"></div>
 
-        <div class="timeline-section">
-            <h2>Our Journey</h2>
+        <div class="overview-section">
+            <h2>Project Overview</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-icon"><i class="fas fa-seedling"></i></div>
                     <div class="timeline-content">
-                        <h3>2023 - The Idea</h3>
-                        <p>Take n' Read was born from a passion to connect book lovers and make literature accessible.</p>
+                        <h3>2025 - Ideation</h3>
+                        <p>Our team formed for the Advanced Programming coursework at Itahari International College and brainstormed Take n' Read, a platform to connect book lovers through buying, selling, and sharing literature, aiming to make reading accessible and sustainable.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-icon"><i class="fas fa-book"></i></div>
+                    <div class="timeline-icon"><i class="fas fa-lightbulb"></i></div>
                     <div class="timeline-content">
-                        <h3>2024 - Launch</h3>
-                        <p>We launched our platform, enabling users to buy admin-curated books and sell their own.</p>
+                        <h3>2025 - Design & Planning</h3>
+                        <p>We refined the concept through group discussions, designing a user-friendly system with admin-curated book listings, user-driven sales, and community features for reviews and recommendations.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-icon"><i class="fas fa-users"></i></div>
+                    <div class="timeline-icon"><i class="fas fa-code"></i></div>
                     <div class="timeline-content">
-                        <h3>2025 - Community Growth</h3>
-                        <p>Our community thrives, with thousands of books exchanged and stories shared.</p>
+                        <h3>2025 - Development</h3>
+                        <p>Using Java, JSP, and MySQL, we built the platform, implementing features like secure user authentication, responsive design, and direct buyer-seller communication, overcoming challenges like CSS conflicts through teamwork.</p>
                     </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="timeline-content">
+                        <h3>2025 - Completion</h3>
+                        <p>We delivered a fully functional Take n' Read platform, tested and polished, ready to foster a vibrant community of book enthusiasts with seamless book exchange capabilities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-list">
+                <ul>
+                    <li>Bipul Bhandari</li>
+                    <li>Bibek Luitel</li>
+                    <li>Deepti Dhungana</li>
+                    <li>Divyam Adhikari</li>
+                    <li>Roshan Bishwas Tharu</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="contact-section">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3>Get in Touch</h3>
+                    <form action="${pageContext.request.contextPath}/contact" method="post" onsubmit="return validateForm(event)">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                    <div class="success-message"></div>
+                </div>
+                <div class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d258.10767574384494!2d87.30204282185163!3d26.655449964027643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef6ea070e7b18b%3A0x2959e2a3e2bf54e0!2sItahari%20International%20College!5e1!3m2!1sen!2snp!4v1745247779414!5m2!1sen!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>

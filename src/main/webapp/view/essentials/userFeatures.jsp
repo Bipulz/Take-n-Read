@@ -200,7 +200,7 @@
         <div class="features-row">
             <a href="${pageContext.request.contextPath}/view/BookUtils/sellBook.jsp" class="feature-card sell">
                 <i class="fas fa-book-open"></i>
-                <h3>Sell Old Book™</h3>
+                <h3>Sell Old Book</h3>
                 <p>List Your Books</p>
             </a>
             <a href="${pageContext.request.contextPath}/view/essentials/profile.jsp" class="feature-card profile">
