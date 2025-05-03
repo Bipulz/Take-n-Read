@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,6 @@
             padding: 10px 40px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             position: sticky;
-            top Ascending sticky;
             top: 0;
             z-index: 1000;
         }
@@ -432,62 +432,102 @@
     </header>
 
     <nav>
-        <a href="home.jsp"><i class="fas fa-home"></i> Home</a>
+        <a href="${pageContext.request.contextPath}/admin/home.jsp"><i class="fas fa-home"></i> Home</a>
+        <a href="${pageContext.request.contextPath}/admin/allBook.jsp"><i class="fas fa-book"></i> All Books</a>
     </nav>
 
     <div class="main-content">
         <div class="form-container">
             <h2>Edit Book</h2>
             <div class="divider"></div>
-            <form action="editBookServlet" method="post" enctype="multipart/form-data">
+            <% 
+                String bookIdStr = request.getParameter("bookId");
+                int bookId = 0;
+                String bookName = "";
+                String authorName = "";
+                double price = 0.0;
+                String category = "";
+                String status = "";
+
+                if (bookIdStr != null && !bookIdStr.isEmpty()) {
+                    try {
+                        bookId = Integer.parseInt(bookIdStr);
+                        Connection conn = connectionDAO.getconn();
+                        String sql = "SELECT * FROM book WHERE bookId = ?";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        stmt.setInt(1, bookId);
+                        ResultSet rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            bookName = rs.getString("bookname") != null ? rs.getString("bookname") : "";
+                            authorName = rs.getString("author") != null ? rs.getString("author") : "";
+                            price = rs.getDouble("price");
+                            category = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "";
+                            status = rs.getString("status") != null ? rs.getString("status") : "";
+                        } else {
+                            response.sendRedirect("allBook.jsp?error=Book+not+found");
+                            return;
+                        }
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        response.sendRedirect("allBook.jsp?error=Database+error+occurred");
+                        return;
+                    } catch (NumberFormatException e) {
+                        response.sendRedirect("allBook.jsp?error=Invalid+book+ID");
+                        return;
+                    }
+                } else {
+                    response.sendRedirect("allBook.jsp?error=No+book+ID+provided");
+                    return;
+                }
+            %>
+            <form action="${pageContext.request.contextPath}/EditBookServlet" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="bookId" value="<%= bookId %>">
                 <div class="form-group">
                     <label for="bookName">Book Name<span>*</span></label>
                     <i class="fas fa-book"></i>
-                    <input type="text" id="bookName" name="bookName" required>
+                    <input type="text" id="bookName" name="bookName" value="<%= bookName %>" required>
                 </div>
                 <div class="form-group">
                     <label for="authorName">Author Name<span>*</span></label>
                     <i class="fas fa-user"></i>
-                    <input type="text" id="authorName" name="authorName" required>
+                    <input type="text" id="authorName" name="authorName" value="<%= authorName %>" required>
                 </div>
                 <div class="form-group price-group">
                     <label for="price">Price (NPR)<span>*</span></label>
                     <span class="rs-prefix">Rs</span>
-                    <input type="number" id="price" name="price" step="0.01" required>
+                    <input type="number" id="price" name="price" step="0.01" value="<%= price %>" required>
                 </div>
                 <div class="form-group">
                     <label for="category">Book Category</label>
                     <i class="fas fa-tags"></i>
                     <select id="category" name="category">
-                        <option value="" disabled selected>--select--</option>
-                        <option value="fiction">Fiction</option>
-                        <option value="non-fiction">Non-Fiction</option>
-                        <option value="science">Science</option>
-                        <option value="history">History</option>
-                        <option value="biography">Biography</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="mystery">Mystery</option>
-                        <option value="romance">Romance</option>
-                        <option value="thriller">Thriller</option>
-                        <option value="self-help">Self-Help</option>
+                        <option value="" <%= category.isEmpty() ? "selected" : "" %> disabled>--select--</option>
+                        <option value="fiction" <%= "fiction".equals(category) ? "selected" : "" %>>Fiction</option>
+                        <option value="non-fiction" <%= "non-fiction".equals(category) ? "selected" : "" %>>Non-Fiction</option>
+                        <option value="science" <%= "science".equals(category) ? "selected" : "" %>>Science</option>
+                        <option value="history" <%= "history".equals(category) ? "selected" : "" %>>History</option>
+                        <option value="biography" <%= "biography".equals(category) ? "selected" : "" %>>Biography</option>
+                        <option value="fantasy" <%= "fantasy".equals(category) ? "selected" : "" %>>Fantasy</option>
+                        <option value="mystery" <%= "mystery".equals(category) ? "selected" : "" %>>Mystery</option>
+                        <option value="romance" <%= "romance".equals(category) ? "selected" : "" %>>Romance</option>
+                        <option value="thriller" <%= "thriller".equals(category) ? "selected" : "" %>>Thriller</option>
+                        <option value="self-help" <%= "self-help".equals(category) ? "selected" : "" %>>Self-Help</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="status">Book Status</label>
                     <i class="fas fa-info-circle"></i>
                     <select id="status" name="status">
-                        <option value="" disabled selected>--select--</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="" <%= status.isEmpty() ? "selected" : "" %> disabled>--select--</option>
+                        <option value="active" <%= "active".equals(status) ? "selected" : "" %>>Active</option>
+                        <option value="inactive" <%= "inactive".equals(status) ? "selected" : "" %>>Inactive</option>
                     </select>
                 </div>
-                <div class="form-group file-group">
-                    <label for="photo">Upload Photo</label>
-                    <input type="file" id="photo" name="photo" accept="image/*">
-                    <label for="photo" class="file-label">Choose File</label>
-                    <span class="file-name"></span>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-check"></i>Confirm and Save Book</button>
+
+                <button type="submit" class="submit-btn"><i class="fas fa-check"></i>Save Changes</button>
             </form>
         </div>
     </div>
@@ -496,22 +536,6 @@
         © 2025 Take n' Read. All rights reserved.
     </footer>
 
-    <script>
-        const fileInput = document.getElementById('photo');
-        const fileLabel = document.querySelector('.file-label');
-        const fileName = document.querySelector('.file-name');
 
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                fileLabel.textContent = 'Added';
-                fileName.textContent = fileInput.files[0].name;
-                fileName.classList.add('visible');
-            } else {
-                fileLabel.textContent = 'Choose File';
-                fileName.textContent = '';
-                fileName.classList.remove('visible');
-            }
-        });
-    </script>
 </body>
 </html>

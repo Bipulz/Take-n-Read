@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO, model.UserDAO, java.util.List, model.Book" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,6 +89,25 @@
             margin-bottom: 20px;
             text-align: center;
             font-weight: 700;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #A3BFFA;
+            color: #FFFFFF;
+        }
+
+        .message.error {
+            background: #F87171;
+            color: #FFFFFF;
         }
 
         .table-controls {
@@ -190,7 +211,7 @@
             font-size: 13px;
         }
 
-        th.title, th.author {
+        th.title, th.author, th.added-by {
             text-align: left;
         }
 
@@ -219,7 +240,7 @@
             border-right: none;
         }
 
-        td.title, td.author {
+        td.title, td.author, td.added-by {
             text-align: left;
         }
 
@@ -415,17 +436,35 @@
     </header>
 
     <nav>
-        <a href="home.jsp"><i class="fas fa-home"></i> Home</a>
+        <a href="${pageContext.request.contextPath}/admin/home.jsp"><i class="fas fa-home"></i> Home</a>
+        <a href="${pageContext.request.contextPath}/admin/addbook.jsp"><i class="fas fa-plus"></i> Add Book</a>
     </nav>
 
     <div class="main-content">
         <h1>All Books</h1>
+        <% 
+            String successMessage = request.getParameter("success");
+            String errorMessage = request.getParameter("error");
+            if (successMessage != null) {
+        %>
+            <div class="message success">
+                <%= successMessage %>
+            </div>
+        <% 
+            } else if (errorMessage != null) {
+        %>
+            <div class="message error">
+                <%= errorMessage %>
+            </div>
+        <% 
+            }
+        %>
         <div class="table-controls">
             <div class="search-bar">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Search books by title...">
             </div>
-            <a href="addbook.jsp" class="add-book-link">
+            <a href="${pageContext.request.contextPath}/admin/addbook.jsp" class="add-book-link">
                 <i class="fas fa-plus"></i> Add Book
             </a>
         </div>
@@ -433,75 +472,89 @@
             <table id="bookTable">
                 <thead>
                     <tr>
-                        <th style="width: 10%;">Book ID</th>
-                        <th class="title" style="width: 25%;">Title</th>
-                        <th class="author" style="width: 20%;">Author</th>
-                        <th style="width: 15%;">Price</th>
-                        <th style="width: 15%;">Category</th>
-                        <th style="width: 10%;">Status</th>
+                        <th style="width: 8%;">Book ID</th>
+                        <th class="title" style="width: 20%;">Title</th>
+                        <th class="author" style="width: 15%;">Author</th>
+                        <th class="added-by" style="width: 20%;">Added By</th>
+                        <th style="width: 10%;">Price</th>
+                        <th style="width: 12%;">Category</th>
+                        <th style="width: 8%;">Status</th>
                         <th style="width: 15%;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% 
+                        Connection conn = null;
+                        PreparedStatement stmt = null;
+                        ResultSet rs = null;
+                        try {
+                            conn = connectionDAO.getconn();
+                            String sql = "SELECT * FROM book";
+                            stmt = conn.prepareStatement(sql);
+                            rs = stmt.executeQuery();
+                            boolean hasBooks = false;
+                            while (rs.next()) {
+                                hasBooks = true;
+                                int bookId = rs.getInt("bookId");
+                                String title = rs.getString("bookname");
+                                String author = rs.getString("author");
+                                String userEmail = rs.getString("user_email");
+                                double price = rs.getDouble("price");
+                                String category = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
+                                String status = rs.getString("status");
+                                boolean isAdminBook = "admin@gmail.com".equals(userEmail);
+                    %>
                     <tr>
-                        <td>1</td>
-                        <td class="title">Muna Madan</td>
-                        <td class="author">Laxmi Prasad Devkota</td>
-                        <td class="price">250.00</td>
-                        <td class="category"><i class="fas fa-scroll"></i> Poetry</td>
-                        <td class="status active">Active</td>
+                        <td><%= bookId %></td>
+                        <td class="title"><%= title %></td>
+                        <td class="author"><%= author %></td>
+                        <td class="added-by"><%= userEmail %></td>
+                        <td class="price"><%= price %></td>
+                        <td class="category">
+                            <i class="fas fa-<%= category.equalsIgnoreCase("Fiction") ? "book" : category.equalsIgnoreCase("History") ? "landmark" : category.equalsIgnoreCase("Science") ? "flask" : category.equalsIgnoreCase("Fantasy") ? "dragon" : category.equalsIgnoreCase("Mystery") ? "question" : "scroll" %>"></i> 
+                            <%= category %>
+                        </td>
+                        <td class="status <%= status.toLowerCase() %>"><%= status %></td>
                         <td class="action">
-                        <a href="editBook.jsp">
-                            <button class="action-btn edit"><i class="fas fa-edit"></i> Edit</button></a>
-                            <button class="action-btn delete"><i class="fas fa-trash"></i> Delete</button>
+                            <% if (isAdminBook) { %>
+                                <a href="${pageContext.request.contextPath}/admin/editBook.jsp?bookId=<%= bookId %>">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i> Edit</button>
+                                </a>
+                            <% } %>
+                            <a href="${pageContext.request.contextPath}/DeleteBookServlet?bookId=<%= bookId %>" onclick="return confirm('Are you sure you want to delete this book?');">
+                                <button class="action-btn delete"><i class="fas fa-trash"></i> Delete</button>
+                            </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="title">Shirishko Phool</td>
-                        <td class="author">Parijat</td>
-                        <td class="price">350.00</td>
-                        <td class="category"><i class="fas fa-book"></i> Fiction</td>
-                        <td class="status active">Active</td>
-                        <td class="action">
-                            <button class="action-btn edit"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="action-btn delete"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
+                    <% 
+                            }
+                            if (!hasBooks) {
+                    %>
+                    <tr class="no-books show">
+                        <td colspan="8">No Books Found</td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="title">Seto Bagh</td>
-                        <td class="author">Diamond Shumsher Rana</td>
-                        <td class="price">400.00</td>
-                        <td class="category"><i class="fas fa-landmark"></i> History</td>
-                        <td class="status inactive">Inactive</td>
-                        <td class="action">
-                            <button class="action-btn edit"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="action-btn delete"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
+                    <% 
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                    %>
+                    <tr class="no-books show">
+                        <td colspan="8">Error loading books: <%= e.getMessage() %></td>
                     </tr>
-                    <tr>
-                        <td>4</td>
-                        <td class="title">Jhola</td>
-                        <td class="author">Krishna Dharabasi</td>
-                        <td class="price">300.00</td>
-                        <td class="category"><i class="fas fa-book"></i> Fiction</td>
-                        <td class="status active">Active</td>
-                        <td class="action">
-                            <button class="action-btn edit"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="action-btn delete"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="no-books">
-                        <td colspan="7">No Books Found</td>
-                    </tr>
+                    <% 
+                        } finally {
+                            if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                            if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                            if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        }
+                    %>
                 </tbody>
             </table>
         </div>
     </div>
 
     <footer>
-        © 2025 Take n' Read. All rights reserved.
+        Â© 2025 Take n' Read. All rights reserved.
     </footer>
 
     <script>
