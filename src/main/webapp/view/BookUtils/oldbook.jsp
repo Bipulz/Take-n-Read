@@ -26,11 +26,11 @@
                     conn = connectionDAO.getconn();
                     String sql;
                     if (user == null) {
-                        // If user is not logged in, show all old books except admin's
+                     
                         sql = "SELECT * FROM book WHERE user_email != 'admin@gmail.com' AND status = 'pending'";
                         stmt = conn.prepareStatement(sql);
                     } else {
-                        // If user is logged in, show their books (excluding admin)
+                        
                         sql = "SELECT * FROM book WHERE user_email = ? AND user_email != 'admin@gmail.com' AND status = 'pending'";
                         stmt = conn.prepareStatement(sql);
                         stmt.setString(1, user.getEmail());
@@ -39,7 +39,7 @@
                     boolean hasBooks = false;
                     while (rs.next()) {
                         hasBooks = true;
-                        int bookId = rs.getInt("bookId"); // Changed from 'id' to 'bookId'
+                        int bookId = rs.getInt("bookId"); 
                         String bookName = rs.getString("bookname");
                         String author = rs.getString("author");
                         double price = rs.getDouble("price");
@@ -54,7 +54,7 @@
                     <p class="book-category"><i class="fas fa-bookmark"></i> <%= bookCategory %></p>
                     <span class="price"><i class="fas fa-tag"></i> Rs. <%= price %></span>
                     <div class="row">
-                        <a href="${pageContext.request.contextPath}/view/BookUtils/viewDetailsStatic-2.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+                        <a href="${pageContext.request.contextPath}/view/BookUtils/userBookDetails.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
                     </div>
                 </div>
             </div>

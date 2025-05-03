@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO, model.User, model.UserDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Details - Karnali Blues</title>
+    <title>Book Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -190,10 +191,30 @@
             margin-bottom: 1rem;
         }
 
+        .seller-details .seller-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .seller-details .seller-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #E5E7EB;
+        }
+
         .seller-details p {
             font-size: 1rem;
             color: #6B7280;
             margin: 0.5rem 0;
+        }
+
+        .seller-details .contact-icon {
+            color: #A3BFFA;
+            margin-right: 0.5rem;
         }
 
         footer {
@@ -236,6 +257,11 @@
             .seller-details h3 {
                 font-size: 1.25rem;
             }
+
+            .seller-details .seller-info img {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -243,14 +269,44 @@
     <%@include file="../utils/Navbar.jsp" %>
     <div class="main-content">
         <div class="book-details-container">
+            <%
+                Connection conn = null;
+                PreparedStatement stmt = null;
+                ResultSet rs = null;
+                int bookId = Integer.parseInt(request.getParameter("bookId"));
+                User seller = null;
+                try {
+                    conn = connectionDAO.getconn();
+                    // Fetch book details
+                    String bookSql = "SELECT * FROM book WHERE bookId = ? AND status = 'pending' AND user_email != 'admin@gmail.com'";
+                    stmt = conn.prepareStatement(bookSql);
+                    stmt.setInt(1, bookId);
+                    rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        String bookName = rs.getString("bookname");
+                        String author = rs.getString("author");
+                        String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
+                        double price = rs.getDouble("price");
+                        String photo = rs.getString("photo");
+                        String userEmail = rs.getString("user_email");
+
+                        // Fetch seller details from User table
+                        UserDAO userDao = new UserDAO(conn);
+                        seller = userDao.getUserByEmail(userEmail);
+                        String sellerName = (seller != null && seller.getName() != null) ? seller.getName() : userEmail.split("@")[0];
+                        String sellerPhone = (seller != null && seller.getPhno() != null) ? seller.getPhno() : "Not provided";
+                        String sellerProfileImage = (seller != null && seller.getProfileImage() != null) 
+                            ? request.getContextPath() + "/" + seller.getProfileImage() + "?t=" + System.currentTimeMillis()
+                            : "https://via.placeholder.com/60";
+            %>
             <div class="image-container">
-                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/karnali-blues.jpg">
+                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
             </div>
             <div class="details-container">
                 <div>
-                    <h2>Karnali Blues</h2>
-                    <p class="book-author">By Buddhisagar</p>
-                    <p class="book-category"><i class="fas fa-bookmark"></i> Contemporary Fiction</p>
+                    <h2><%= bookName %></h2>
+                    <p class="book-author">By <%= author %></p>
+                    <p class="book-category"><i class="fas fa-bookmark"></i> <%= bookCategory %></p>
                     <div class="category-tags">
                         <span class="category-tag old">Old</span>
                     </div>
@@ -258,17 +314,40 @@
                         <span><i class="fas fa-undo"></i> Return Available</span>
                         <span><i class="fas fa-truck"></i> Free Shipping</span>
                     </div>
-                    <p class="price">Rs. 400</p>
+                    <p class="price">Rs. <%= price %></p>
                 </div>
                 <div class="seller-details">
                     <h3>Seller Information</h3>
-                    <p><strong>Name:</strong> Ram Dhakal</p>
-                    <p><strong>Email:</strong> Ramdhakal@gmail.com</p>
-                    <p><strong>Contact Instructions:</strong> Please email me to arrange the purchase.</p>
+                    <div class="seller-info">
+                        <img src="<%= sellerProfileImage %>" alt="Seller Profile" class="seller-profile-img">
+                        <div>
+                            <p><strong><%= sellerName %></strong></p>
+                            <p><i class="fas fa-phone contact-icon"></i> Phone: <%= sellerPhone %></p>
+                            <p><i class="fas fa-envelope contact-icon"></i> Email: <%= userEmail %></p>
+                        </div>
+                    </div>
+                    <p><i class="fas fa-info-circle"></i> Contact Instructions: Contact via phone or email to inquire about or purchase the book. Typically responds within 24 hours.</p>
                 </div>
             </div>
+            <% 
+                    } else {
+            %>
+                <p class="no-books">Book not found or not available.</p>
+            <% 
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+            %>
+                <p class="no-books">Error loading book details: <%= e.getMessage() %></p>
+            <% 
+                } finally {
+                    if (rs != null) rs.close();
+                    if (stmt != null) stmt.close();
+                    if (conn != null) conn.close();
+                }
+            %>
         </div>
     </div>
- <%@include file="../utils/footer.jsp" %>
+    <%@include file="../utils/footer.jsp" %>
 </body>
 </html>
