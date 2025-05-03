@@ -21,7 +21,29 @@
             color: #374151;
         }
 
-   
+        header {
+            background: #FFFFFF;
+            padding: 12px 40px;
+            border-bottom: 1px solid #A3BFFA;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #A3BFFA;
+            font-size: 22px;
+        }
+
         .main-content {
             padding: 30px 20px;
             max-width: 1400px;
@@ -66,6 +88,27 @@
             text-align: center;
             font-weight: 700;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-message::before {
+            content: "✓ ";
+        }
+
+        .error-message {
+            color: #F87171;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
 
         .divider {
@@ -362,13 +405,31 @@
     </style>
 </head>
 <body>
-<%@include file="../utils/Navbar.jsp" %>
+   
+    <%@include file="../utils/Navbar.jsp" %>
 
     <div class="main-content">
         <div class="form-container">
             <h2>Sell Your Book</h2>
             <div class="divider"></div>
-            <form action="sellBookServlet" method="post" enctype="multipart/form-data">
+            <% 
+                String success = request.getParameter("success");
+                String error = request.getParameter("error");
+                if (success != null) {
+            %>
+                <div class="success-message" id="successMessage">Book listed successfully</div>
+            <% 
+                } else if (error != null && (error.contains("All required fields must be filled") || error.contains("Photo upload failed"))) {
+            %>
+                <div class="error-message">Please fill all the details</div>
+            <% 
+                } else if (error != null) {
+            %>
+                <div class="error-message"><%= error %></div>
+            <% 
+                }
+            %>
+            <form action="${pageContext.request.contextPath}/sellBookServlet" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="bookName">Book Name<span>*</span></label>
                     <i class="fas fa-book"></i>
@@ -378,6 +439,11 @@
                     <label for="authorName">Author Name<span>*</span></label>
                     <i class="fas fa-user"></i>
                     <input type="text" id="authorName" name="authorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookCategory">Book Category<span>*</span></label>
+                    <i class="fas fa-list"></i>
+                    <input type="text" id="bookCategory" name="bookCategory" required>
                 </div>
                 <div class="form-group price-group">
                     <label for="price">Price (NPR)<span>*</span></label>
@@ -393,10 +459,9 @@
                 <button type="submit" class="submit-btn"><i class="fas fa-shopping-cart"></i>Sell Book</button>
             </form>
         </div>
-        
     </div>
 
-		 <%@include file="../utils/footer.jsp" %>
+    <%@include file="../utils/footer.jsp" %>
 
     <script>
         const fileInput = document.getElementById('photo');
@@ -414,6 +479,13 @@
                 fileName.classList.remove('visible');
             }
         });
+
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
     </script>
 </body>
 </html>
