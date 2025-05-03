@@ -20,34 +20,48 @@
     <div class="books-grid">
         <%
             Connection conn = null;
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             ResultSet rs = null;
             try {
                 conn = connectionDAO.getconn();
-                stmt = conn.createStatement();
-                // Show only active books, newest first, limited to 6
-                rs = stmt.executeQuery("SELECT * FROM book WHERE status = 'active' ORDER BY bookid DESC LIMIT 6");
+                // Show only admin-added books (user_email = 'admin@gmail.com') with status 'active', newest first, limited to 6
+                String sql = "SELECT * FROM book WHERE status = 'active' AND user_email = 'admin@gmail.com' ORDER BY bookId DESC LIMIT 6";
+                stmt = conn.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                boolean hasBooks = false;
                 while (rs.next()) {
+                    hasBooks = true;
+                    int bookId = rs.getInt("bookId");
+                    String bookName = rs.getString("bookname");
+                    String author = rs.getString("author");
+                    String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
+                    double price = rs.getDouble("price");
+                    String photo = rs.getString("photo");
         %>
         <div class="book-card">
-            <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= rs.getString("photo") %>">
+            <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
             <div class="book-info">
-                <h4 class="book-title"><%= rs.getString("bookname") %></h4>
-                <p class="book-author"><%= rs.getString("author") %></p>
-                <p class="book-category"><i class="fas fa-bookmark"></i> <%= rs.getString("bookCategory") %></p>
-                <span class="price"><i class="fas fa-tag"></i> Rs. <%= rs.getDouble("price") %></span>
+                <h4 class="book-title"><%= bookName %></h4>
+                <p class="book-author"><%= author %></p>
+                <p class="book-category"><i class="fas fa-bookmark"></i> <%= bookCategory %></p>
+                <span class="price"><i class="fas fa-tag"></i> Rs. <%= price %></span>
                 <div class="row">
                     <a href="#" class="btn add-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-                    <a href="#" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+                    <a href="${pageContext.request.contextPath}/view/BookUtils/adminBookDetails.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
                 </div>
             </div>
         </div>
         <%
                 }
+                if (!hasBooks) {
+        %>
+        <p class="no-books">No new books available at the moment.</p>
+        <%
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
         %>
-        <div class="error">Error loading books. Please try again later.</div>
+        <div class="error">Error loading books: <%= e.getMessage() %></div>
         <%
             } finally {
                 try {

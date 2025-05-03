@@ -14,7 +14,7 @@ import jakarta.servlet.http.Part;
 import model.connectionDAO;
 
 @WebServlet("/AdminAddBookServlet")
-@MultipartConfig(maxFileSize = 10485760) // 10MB max file size
+@MultipartConfig(maxFileSize = 10485760) 
 public class AdminAddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,7 +77,7 @@ public class AdminAddBookServlet extends HttpServlet {
             stmt.setString(4, bookCategory != null ? bookCategory : "uncategorized");
             stmt.setString(5, status != null ? status : "active");
             stmt.setString(6, fileName);
-            stmt.setString(7, "admin@gmail.com"); // Hardcoded admin email
+            stmt.setString(7, "admin@gmail.com");
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {

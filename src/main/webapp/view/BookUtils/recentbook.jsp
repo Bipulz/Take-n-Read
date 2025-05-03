@@ -23,7 +23,8 @@
                 ResultSet rs = null;
                 try {
                     conn = connectionDAO.getconn();
-                    String sql = "SELECT * FROM book WHERE status = 'pending' ORDER BY bookId DESC LIMIT 3";
+                    // Fetch all books, regardless of status, ordered by bookId DESC, limited to 6
+                    String sql = "SELECT * FROM book ORDER BY bookId DESC LIMIT 6";
                     stmt = conn.prepareStatement(sql);
                     rs = stmt.executeQuery();
                     boolean hasBooks = false;
@@ -36,7 +37,8 @@
                         String photo = rs.getString("photo");
                         String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
                         String userEmail = rs.getString("user_email");
-                        boolean isAdminBook = "admin@gmail.com".equals(userEmail);
+                        System.out.println("Fetched book: ID=" + bookId + ", Name=" + bookName + ", UserEmail=" + userEmail + ", Status=" + rs.getString("status"));
+                        boolean isAdminBook = userEmail != null && userEmail.toLowerCase().equals("admin@gmail.com");
             %>
             <div class="book-card">
                 <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
@@ -49,7 +51,7 @@
                         <% if (isAdminBook) { %>
                             <a href="#" class="btn add-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                         <% } %>
-                        <a href="${pageContext.request.contextPath}/view/BookUtils/viewDetailsStatic-2.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+                        <a href="${pageContext.request.contextPath}/view/BookUtils/<%= isAdminBook ? "adminBookDetails.jsp" : "userBookDetails.jsp" %>?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
                     </div>
                 </div>
             </div>
@@ -62,6 +64,7 @@
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    System.err.println("SQL Error: " + e.getMessage());
             %>
                 <p class="no-books">Error loading books: <%= e.getMessage() %></p>
             <% 

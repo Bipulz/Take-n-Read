@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -340,26 +341,60 @@
    <%@include file="../utils/Navbar.jsp" %>
     <div class="main-content">
         <div class="book-details-container">
+            <%
+                Connection conn = null;
+                PreparedStatement stmt = null;
+                ResultSet rs = null;
+                int bookId = Integer.parseInt(request.getParameter("bookId"));
+                try {
+                    conn = connectionDAO.getconn();
+                    String sql = "SELECT * FROM book WHERE bookId = ? AND user_email = 'admin@gmail.com'";
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setInt(1, bookId);
+                    rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        String bookName = rs.getString("bookname");
+                        String author = rs.getString("author");
+                        double price = rs.getDouble("price");
+                        String photo = rs.getString("photo");
+                        String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
+            %>
             <div class="image-container">
-                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/palpasa-cafe.jpg">
+                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
             </div>
             <div class="details-container">
                 <div>
-                    <h2>Palpasa Cafe</h2>
-                    <p class="book-author">By Narayan Wagle</p>
-                    <p class="book-category"><i class="fas fa-bookmark"></i> Contemporary Fiction</p>
+                    <h2><%= bookName %></h2>
+                    <p class="book-author">By <%= author %></p>
+                    <p class="book-category"><i class="fas fa-bookmark"></i> <%= bookCategory %></p>
                     <div class="category-tags">
                         <span class="category-tag new">New</span>
-<!--                         <span class="category-tag old">Old</span> -->
                     </div>
                     <div class="features">
                         <span><i class="fas fa-undo"></i> Return Available</span>
                         <span><i class="fas fa-truck"></i> Free Shipping</span>
                     </div>
-                    <p class="price">Rs. 350</p>
+                    <p class="price">Rs. <%= price %></p>
                 </div>
                 <a href="#" class="add-cart-btn"><i class="fas fa-cart-plus"></i> Add to Cart</a>
             </div>
+            <% 
+                    } else {
+            %>
+                <p class="no-books">Book not found or not an admin-added book.</p>
+            <% 
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+            %>
+                <p class="no-books">Error loading book details: <%= e.getMessage() %></p>
+            <% 
+                } finally {
+                    if (rs != null) rs.close();
+                    if (stmt != null) stmt.close();
+                    if (conn != null) conn.close();
+                }
+            %>
         </div>
     </div>
     <%@include file="../utils/footer.jsp" %>
