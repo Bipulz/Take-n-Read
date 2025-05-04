@@ -16,7 +16,7 @@ import model.User;
 import model.connectionDAO;
 
 @WebServlet("/sellBookServlet")
-@MultipartConfig(maxFileSize = 10485760) // 10MB max file size
+@MultipartConfig(maxFileSize = 10485760) 
 public class SellBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,7 +77,7 @@ public class SellBookServlet extends HttpServlet {
                 throw new SQLException("Failed to establish database connection");
             }
 
-            // Save file to img directory within WebContent
+          
             String uploadPath = getServletContext().getRealPath("") + "img";
             java.io.File fileSaveDir = new java.io.File(uploadPath);
             if (!fileSaveDir.exists()) {
@@ -96,7 +96,7 @@ public class SellBookServlet extends HttpServlet {
             stmt.setDouble(4, price);
             stmt.setString(5, fileName);
             stmt.setString(6, userEmail);
-            stmt.setString(7, "pending"); // Default status for user-sold books
+            stmt.setString(7, "pending");
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {

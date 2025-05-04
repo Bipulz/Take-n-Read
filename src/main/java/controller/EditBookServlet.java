@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,6 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import model.connectionDAO;
 
 import jakarta.servlet.annotation.WebServlet;
@@ -68,7 +68,7 @@ public class EditBookServlet extends HttpServlet {
             rs.close();
             stmt.close();
 
-            // Update the book
+  
             String updateSql = "UPDATE book SET bookname = ?, author = ?, price = ?, bookCategory = ?, status = ? WHERE bookId = ?";
             stmt = conn.prepareStatement(updateSql);
             stmt.setString(1, bookName);

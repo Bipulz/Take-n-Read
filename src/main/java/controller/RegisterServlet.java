@@ -72,7 +72,7 @@ public class RegisterServlet extends HttpServlet {
             us.setName(name);
             us.setEmail(email);
             us.setPhno(phno);
-            us.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            us.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));   //BCrypt register password
             us.setAddress(address);
             us.setCity(city); 
             us.setState(state); 

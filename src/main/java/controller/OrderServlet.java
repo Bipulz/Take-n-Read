@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.connectionDAO;
+import model.Order;
+import model.Cart;
+import model.OrderDAO;
+import model.CartDAO;
+import java.util.List;
 
 @WebServlet("/OrderServlet")
 public class OrderServlet extends HttpServlet {
@@ -42,42 +48,45 @@ public class OrderServlet extends HttpServlet {
 
             conn.setAutoCommit(false);
 
-            // Fetch all cart items for the user
-            String cartSql = "SELECT * FROM cart WHERE userID = ?";
-            cartStmt = conn.prepareStatement(cartSql);
-            cartStmt.setInt(1, user.getId());
-            rs = cartStmt.executeQuery();
+            // Fetch all cart items for the user using CartDAO
+            CartDAO cartDAO = new CartDAO(conn);
+            List<Cart> cartItems = cartDAO.getCartItems(user.getId());
 
-            while (rs.next()) {
-                int cartId = rs.getInt("cartID");
-                String bookName = rs.getString("bookName");
-                String author = rs.getString("author");
-                double price = rs.getDouble("price");
-                int quantity = rs.getInt("quantity");
-
-                // Generate a simple order ID (e.g., userID-timestamp)
-                String orderId = user.getId() + "-" + System.currentTimeMillis();
-
-                // Insert into book_order
-                String orderSql = "INSERT INTO book_order (order_id, user_name, address, email, phone, book_name, author, price, payment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                orderStmt = conn.prepareStatement(orderSql);
-                orderStmt.setString(1, orderId);
-                orderStmt.setString(2, user.getName());
-                orderStmt.setString(3, user.getAddress());
-                orderStmt.setString(4, user.getEmail());
-                orderStmt.setString(5, user.getPhno());
-                orderStmt.setString(6, bookName);
-                orderStmt.setString(7, author);
-                orderStmt.setDouble(8, price * quantity); // Total price for this item
-                orderStmt.setString(9, "Cash on Delivery"); // Hardcoded as per form
-                orderStmt.executeUpdate();
+            // Check if cart is empty
+            if (cartItems.isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/view/order/cart.jsp?error=Cart+is+empty");
+                return;
             }
 
-            // Clear the cart
-            String deleteSql = "DELETE FROM cart WHERE userID = ?";
-            deleteStmt = conn.prepareStatement(deleteSql);
-            deleteStmt.setInt(1, user.getId());
-            deleteStmt.executeUpdate();
+            // Process each cart item into an order
+            OrderDAO orderDAO = new OrderDAO(conn);
+            for (Cart item : cartItems) {
+                int cartId = item.getCartId();
+                String bookName = item.getBookName();
+                String author = item.getAuthor();
+                double price = item.getPrice();
+                int quantity = item.getQuantity();
+
+                // Generate a simple order ID 
+                String orderId = user.getId() + "-" + System.currentTimeMillis();
+
+                // Insert into book_order using OrderDAO
+                Order order = new Order(
+                    orderId,
+                    user.getName(),
+                    user.getAddress(),
+                    user.getEmail(),
+                    user.getPhno(),
+                    bookName,
+                    author,
+                    price * quantity, 
+                    "Cash on Delivery"
+                );
+                orderDAO.insertOrder(order);
+            }
+
+            // Clear the cart using CartDAO
+            cartDAO.clearCart(user.getId());
 
             conn.commit();
 

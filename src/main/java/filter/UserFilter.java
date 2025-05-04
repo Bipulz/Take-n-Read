@@ -1,6 +1,7 @@
 package filter;
 
 import jakarta.servlet.*;
+
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.*;
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class UserFilter implements Filter {
         String userEmail = (session != null) ? (String) session.getAttribute("user_email") : null;
 
         if (userEmail == null || !"admin@gmail.com".equals(userEmail)) {
-            chain.doFilter(req, res); // Allow non-admin access
+            chain.doFilter(req, res);
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
         }

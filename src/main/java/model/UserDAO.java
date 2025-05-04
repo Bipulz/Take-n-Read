@@ -1,9 +1,12 @@
 package model;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private Connection conn;
@@ -164,6 +167,110 @@ public class UserDAO {
             return false;
         } catch (Exception e) {
             System.err.println("Unexpected error in updateUserAndImage: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM users";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phno"),
+                    rs.getString("address"),
+                    rs.getString("landmark"),
+                    rs.getString("city"),
+                    rs.getString("state"),
+                    rs.getString("zip"),
+                    rs.getString("profile_image"),
+                    rs.getString("password"),
+                    rs.getBoolean("accept_terms")
+                );
+                users.add(user);
+            }
+            System.out.println("Fetched " + users.size() + " users from the database");
+            return users;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getAllUsers: " + e.getMessage());
+            e.printStackTrace();
+            return users;
+        } catch (Exception e) {
+            System.err.println("Unexpected error in getAllUsers: " + e.getMessage());
+            e.printStackTrace();
+            return users;
+        }
+    }
+
+    public User getUserById(int userId) {
+        try {
+            String sql = "SELECT * FROM users WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phno"),
+                    rs.getString("address"),
+                    rs.getString("landmark"),
+                    rs.getString("city"),
+                    rs.getString("state"),
+                    rs.getString("zip"),
+                    rs.getString("profile_image"),
+                    rs.getString("password"),
+                    rs.getBoolean("accept_terms")
+                );
+                return user;
+            }
+            System.out.println("No user found with id: " + userId);
+            return null;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getUserById: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            System.err.println("Unexpected error in getUserById: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean deleteUser(int userId) {
+        try {
+            // First, fetch the user to check if it's the admin
+            User user = getUserById(userId);
+            if (user != null && "admin@gmail.com".equals(user.getEmail())) {
+                System.out.println("Cannot delete admin user with email: admin@gmail.com");
+                return false;
+            }
+
+            String sql = "DELETE FROM users WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("Parameters: userId=" + userId);
+
+            int i = ps.executeUpdate();
+            System.out.println("Rows affected: " + i);
+            return i == 1;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in deleteUser: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            System.err.println("Unexpected error in deleteUser: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

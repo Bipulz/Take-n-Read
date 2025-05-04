@@ -87,10 +87,25 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr); /* 3 columns for the top row */
             gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Ensure the last two cards (bottom row) span appropriately */
+        .card:nth-child(4),
+        .card:nth-child(5) {
+            grid-column: span 1; /* Each takes 1 column */
+        }
+
+        /* Center the bottom row (2 cards) within the 3-column grid */
+        .cards > .card:nth-child(4) {
+            grid-column: 1 / 2; /* First card in bottom row starts at column 1 */
+        }
+
+        .cards > .card:nth-child(5) {
+            grid-column: 2 / 3; /* Second card in bottom row starts at column 2 */
         }
 
         .card {
@@ -138,7 +153,11 @@
         }
 
         .card:nth-child(4) i {
-            color: #6B7280;
+            color: #34D399; /* Green for User Details */
+        }
+
+        .card:nth-child(5) i {
+            color: #6B7280; /* Gray for Logout */
         }
 
         footer {
@@ -166,11 +185,12 @@
             }
 
             .cards {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Stack all cards on small screens */
             }
 
-            .main-content h1 {
-                font-size: 28px;
+            .card:nth-child(4),
+            .card:nth-child(5) {
+                grid-column: auto; /* Reset for mobile */
             }
         }
 
@@ -204,6 +224,7 @@
     <div class="main-content">
         <h1></h1>
         <div class="cards">
+            <!-- Top Row: 3 Cards -->
             <a href="addbook.jsp" class="card">
                 <i class="fas fa-plus-square"></i>
                 <h3>Add Books</h3>
@@ -219,12 +240,18 @@
                 <h3>Order</h3>
                 <hr class="divider">
             </a>
-				<a href="${pageContext.request.contextPath}/logout" class="card">
-				    <i class="fas fa-sign-out-alt"></i>
-				    <h3>Logout</h3>
-				    <hr class="divider">
-				</a>
-</div>
+            <!-- Bottom Row: 2 Cards -->
+            <a href="userDetails.jsp" class="card">
+                <i class="fas fa-users"></i>
+                <h3>User Details</h3>
+                <hr class="divider">
+            </a>
+            <a href="${pageContext.request.contextPath}/logout" class="card">
+                <i class="fas fa-sign-out-alt"></i>
+                <h3>Logout</h3>
+                <hr class="divider">
+            </a>
+        </div>
     </div>
 
     <footer>

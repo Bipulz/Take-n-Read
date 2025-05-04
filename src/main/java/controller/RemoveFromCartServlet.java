@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.connectionDAO;
+import model.CartDAO;
 
 @WebServlet("/RemoveFromCartServlet")
 public class RemoveFromCartServlet extends HttpServlet {
@@ -40,8 +40,6 @@ public class RemoveFromCartServlet extends HttpServlet {
         }
 
         Connection conn = null;
-        PreparedStatement stmt = null;
-
         try {
             conn = connectionDAO.getconn();
             if (conn == null) {
@@ -49,21 +47,16 @@ public class RemoveFromCartServlet extends HttpServlet {
                 return;
             }
 
-            String deleteSql = "DELETE FROM cart WHERE cartID = ? AND userID = ?";
-            stmt = conn.prepareStatement(deleteSql);
-            stmt.setInt(1, cartId);
-            stmt.setInt(2, user.getId());
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected == 0) {
+            CartDAO cartDAO = new CartDAO(conn);
+            boolean success = cartDAO.removeFromCart(cartId, user.getId());
+            if (success) {
+                response.sendRedirect(request.getContextPath() + redirectPage + "?success=Item+removed+from+cart");
+            } else {
                 response.sendRedirect(request.getContextPath() + redirectPage + "?error=Item+not+found+in+cart");
-                return;
             }
-
-            response.sendRedirect(request.getContextPath() + redirectPage + "?success=Item+removed+from+cart");
         } catch (SQLException e) {
             response.sendRedirect(request.getContextPath() + redirectPage + "?error=Database+error+occurred+" + e.getMessage().replace(" ", "+"));
         } finally {
-            if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* Ignore */ }
             if (conn != null) try { conn.close(); } catch (SQLException e) { /* Ignore */ }
         }
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.connectionDAO;
+import model.Cart;
+import model.CartDAO;
 
 @WebServlet("/AddToCartServlet")
 public class AddToCartServlet extends HttpServlet {
@@ -41,9 +44,6 @@ public class AddToCartServlet extends HttpServlet {
         }
 
         Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
             conn = connectionDAO.getconn();
             if (conn == null) {
@@ -52,60 +52,38 @@ public class AddToCartServlet extends HttpServlet {
                 return;
             }
 
+            // Fetch book details 
             String bookSql = "SELECT bookname, author, price FROM Book WHERE bookId = ? AND status = 'active'";
-            stmt = conn.prepareStatement(bookSql);
-            stmt.setInt(1, bookId);
-            rs = stmt.executeQuery();
-            if (!rs.next()) {
-                out.print("{\"success\": false, \"message\": \"Book not found or inactive\"}");
-                out.flush();
-                return;
-            }
-            String bookName = rs.getString("bookname");
-            String author = rs.getString("author");
-            double price = rs.getDouble("price");
-            rs.close();
-            stmt.close();
+            try (PreparedStatement stmt = conn.prepareStatement(bookSql)) {
+                stmt.setInt(1, bookId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (!rs.next()) {
+                        out.print("{\"success\": false, \"message\": \"Book not found or inactive\"}");
+                        out.flush();
+                        return;
+                    }
+                    String bookName = rs.getString("bookname");
+                    String author = rs.getString("author");
+                    double price = rs.getDouble("price");
+                    double totalPrice = price; 
+                    int quantity = 1;
 
-            String checkCartSql = "SELECT cartID, quantity FROM cart WHERE userID = ? AND bookID = ?";
-            stmt = conn.prepareStatement(checkCartSql);
-            stmt.setInt(1, user.getId());
-            stmt.setInt(2, bookId);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                int cartId = rs.getInt("cartID");
-                int currentQuantity = rs.getInt("quantity");
-                int newQuantity = currentQuantity + 1;
-                double newTotalPrice = price * newQuantity;
-                String updateSql = "UPDATE cart SET quantity = ?, total_price = ?, price = ? WHERE cartID = ?";
-                stmt = conn.prepareStatement(updateSql);
-                stmt.setInt(1, newQuantity);
-                stmt.setDouble(2, newTotalPrice);
-                stmt.setDouble(3, price);
-                stmt.setInt(4, cartId);
-                stmt.executeUpdate();
-            } else {
-                double totalPrice = price;
-                String insertSql = "INSERT INTO cart (userID, bookID, bookName, author, price, total_price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                stmt = conn.prepareStatement(insertSql);
-                stmt.setInt(1, user.getId());
-                stmt.setInt(2, bookId);
-                stmt.setString(3, bookName);
-                stmt.setString(4, author);
-                stmt.setDouble(5, price);
-                stmt.setDouble(6, totalPrice);
-                stmt.setInt(7, 1);
-                stmt.executeUpdate();
+                    // Create Cart object and add to cart
+                    Cart cart = new Cart(bookId, user.getId(), bookName, author, price, totalPrice, quantity);
+                    CartDAO cartDAO = new CartDAO(conn);
+                    boolean success = cartDAO.addToCart(cart);
+                    if (success) {
+                        out.print("{\"success\": true, \"message\": \"Book added to cart\"}");
+                    } else {
+                        out.print("{\"success\": false, \"message\": \"Failed to add book to cart\"}");
+                    }
+                    out.flush();
+                }
             }
-
-            out.print("{\"success\": true, \"message\": \"Book added to cart\"}");
-            out.flush();
         } catch (SQLException e) {
             out.print("{\"success\": false, \"message\": \"Database error occurred: " + e.getMessage().replace("\"", "\\\"") + "\"}");
             out.flush();
         } finally {
-            if (rs != null) try { rs.close(); } catch (SQLException e) { /* Ignore */ }
-            if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* Ignore */ }
             if (conn != null) try { conn.close(); } catch (SQLException e) { /* Ignore */ }
             out.close();
         }
