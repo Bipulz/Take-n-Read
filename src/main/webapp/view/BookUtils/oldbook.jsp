@@ -19,35 +19,33 @@
         <div class="books-grid">
             <% 
                 User user = (User) session.getAttribute("user");
-                Connection conn = null;
-                PreparedStatement stmt = null;
-                ResultSet rs = null;
-                try {
-                    conn = connectionDAO.getconn();
-                    String sql;
-                    if (user == null) {
-                     
-                        sql = "SELECT * FROM book WHERE user_email != 'admin@gmail.com' AND status = 'pending'";
+                if (user != null && user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                    
+            %>
+                <p class="no-books">Admin cannot view user-added books.</p>
+            <% 
+                } else {
+                    Connection conn = null;
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+                    try {
+                        conn = connectionDAO.getconn();
+               
+                        String sql = "SELECT * FROM book WHERE user_email != 'admin@gmail.com' AND status = 'pending'";
                         stmt = conn.prepareStatement(sql);
-                    } else {
-                        
-                        sql = "SELECT * FROM book WHERE user_email = ? AND user_email != 'admin@gmail.com' AND status = 'pending'";
-                        stmt = conn.prepareStatement(sql);
-                        stmt.setString(1, user.getEmail());
-                    }
-                    rs = stmt.executeQuery();
-                    boolean hasBooks = false;
-                    while (rs.next()) {
-                        hasBooks = true;
-                        int bookId = rs.getInt("bookId"); 
-                        String bookName = rs.getString("bookname");
-                        String author = rs.getString("author");
-                        double price = rs.getDouble("price");
-                        String photo = rs.getString("photo");
-                        String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
+                        rs = stmt.executeQuery();
+                        boolean hasBooks = false;
+                        while (rs.next()) {
+                            hasBooks = true;
+                            int bookId = rs.getInt("bookId"); 
+                            String bookName = rs.getString("bookname");
+                            String author = rs.getString("author");
+                            double price = rs.getDouble("price");
+                            String photo = rs.getString("photo");
+                            String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
             %>
             <div class="book-card">
-                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
+                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo != null ? photo : "default.jpg" %>">
                 <div class="book-info">
                     <h4 class="book-title"><%= bookName %></h4>
                     <p class="book-author"><%= author %></p>
@@ -59,21 +57,22 @@
                 </div>
             </div>
             <% 
-                    }
-                    if (!hasBooks) {
+                        }
+                        if (!hasBooks) {
             %>
-                <p class="no-books">No books are being sold. <a href="${pageContext.request.contextPath}/view/BookUtils/sellBook.jsp">Sell a book now</a>.</p>
+                <p class="no-books">No user-added books are available. <a href="${pageContext.request.contextPath}/view/BookUtils/sellBook.jsp">Sell a book now</a>.</p>
             <% 
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
             %>
                 <p class="no-books">Error loading books: <%= e.getMessage() %></p>
             <% 
-                } finally {
-                    if (rs != null) rs.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
+                    } finally {
+                        if (rs != null) try { rs.close(); } catch (SQLException e) { /* Ignore */ }
+                        if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* Ignore */ }
+                        if (conn != null) try { conn.close(); } catch (SQLException e) { /* Ignore */ }
+                    }
                 }
             %>
         </div>
@@ -81,5 +80,6 @@
             <a href="${pageContext.request.contextPath}/view/BookUtils/oldbook.jsp" class="btn"><i class="fas fa-book"></i> View All Books</a>
         </div>
     </div>
+    
 </body>
 </html>

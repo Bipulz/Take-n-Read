@@ -513,9 +513,9 @@
             <li class="dropdown">
                 <button class="nav-link-button"><i class="fas fa-book"></i> Book <i class="fas fa-chevron-down"></i></button>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fas fa-book-open"></i> New Book</a></li>
-                    <li><a href="#"><i class="fas fa-book"></i> Old Book</a></li>
-                    <li><a href="#"><i class="fas fa-clock"></i> Recent Book</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/BookUtils/newbook.jsp"><i class="fas fa-book-open"></i> New Book</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/BookUtils/oldbook.jsp"><i class="fas fa-book"></i> Old Book</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/BookUtils/recentbook.jsp"><i class="fas fa-clock"></i> Recent Book</a></li>
                 </ul>
             </li>
          

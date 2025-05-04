@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO, model.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +85,6 @@
             margin-bottom: 15px;
         }
 
-      
         .cart-table {
             width: 100%;
             border-collapse: collapse;
@@ -120,6 +120,16 @@
         .cart-table td.price::before {
             content: 'Rs ';
             color: #4B5563;
+        }
+
+        .cart-table td.quantity::before {
+            content: '';
+        }
+
+        .cart-table td.quantity::after {
+            content: 'x';
+            color: #4B5563;
+            margin-left: 4px;
         }
 
         .cart-table tbody tr {
@@ -185,7 +195,6 @@
             transform: rotate(10deg);
         }
 
-  
         .payment-form {
             display: flex;
             flex-direction: column;
@@ -241,10 +250,7 @@
         .form-row .form-group {
             flex: 1;
         }
- 
 
- 
- 
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -252,7 +258,7 @@
         }
 
         .order-button, .continue-button {
-        	text-decoration:none;
+            text-decoration: none;
             padding: 10px 20px;
             border: none;
             border-radius: 4px;
@@ -283,6 +289,15 @@
             transform: rotate(15deg);
         }
 
+        .error-message {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
         @media (max-width: 768px) {
             .checkout-container {
                 flex-direction: column;
@@ -299,112 +314,149 @@
     <%@include file="../utils/Navbar.jsp" %>
 
     <div class="checkout-container">
-
         <div class="cart-section">
             <h2>Cart Items</h2>
+            <%
+                User users = (User) session.getAttribute("user");
+
+                if (users == null) {
+                    response.sendRedirect(request.getContextPath() + "/login.jsp?error=Please+login+to+view+cart&redirectPage=" + java.net.URLEncoder.encode("/view/order/cart.jsp", "UTF-8"));
+                    return;
+                }
+            %>
             <table class="cart-table">
                 <thead>
                     <tr>
                         <th><i class="fas fa-book"></i> Book Name</th>
                         <th><i class="fas fa-user"></i> Author</th>
+                        <th><i class="fas fa-sort-numeric-up"></i> Quantity</th>
                         <th><i class="fas fa-money-bill-wave"></i> Price</th>
                         <th><i class="fas fa-trash"></i> Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <%
+                        Connection conn = null;
+                        PreparedStatement stmt = null;
+                        ResultSet rs = null;
+                        double totalPrice = 0.0;
+                        boolean hasItems = false;
+
+                        try {
+                            conn = connectionDAO.getconn();
+                            if (conn == null) {
+                                out.println("<tr><td colspan='5' class='error-message'>Error: Database connection failed.</td></tr>");
+                            } else {
+                                String sql = "SELECT * FROM cart WHERE userID = ?";
+                                stmt = conn.prepareStatement(sql);
+                                stmt.setInt(1, user.getId());
+                                rs = stmt.executeQuery();
+
+                                while (rs.next()) {
+                                    hasItems = true;
+                                    int cartId = rs.getInt("cartID");
+                                    String bookName = rs.getString("bookName");
+                                    String author = rs.getString("author");
+                                    double price = rs.getDouble("price");
+                                    double itemTotal = rs.getDouble("total_price");
+                                    int quantity = rs.getInt("quantity");
+                    %>
                     <tr>
-                        <td>Muna Madan</td>
-                        <td>Laxmi Prasad Devkota</td>
-                        <td class="price">250.00</td>
-                        <td><button class="remove-button"><i class="fas fa-trash"></i> Remove</button></td>
+                        <td><%= bookName != null ? bookName : "N/A" %></td>
+                        <td><%= author != null ? author : "N/A" %></td>
+                        <td class="quantity"><%= quantity %></td>
+                        <td class="price"><%= price %></td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/RemoveFromCartServlet" method="post" style="display:inline;">
+                                <input type="hidden" name="cartId" value="<%= cartId %>">
+                                <input type="hidden" name="redirectPage" value="/view/order/cart.jsp">
+                                <button type="submit" class="remove-button"><i class="fas fa-trash"></i> Remove</button>
+                            </form>
+                        </td>
                     </tr>
+                    <%
+                                    totalPrice += itemTotal;
+                                }
+
+                                if (!hasItems) {
+                    %>
                     <tr>
-                        <td>Shirishko Phool</td>
-                        <td>Parijat</td>
-                        <td class="price">350.00</td>
-                        <td><button class="remove-button"><i class="fas fa-trash"></i> Remove</button></td>
+                        <td colspan="5">Your cart is empty.</td>
                     </tr>
-                    <tr>
-                        <td>Seto Bagh</td>
-                        <td>Diamond Shumsher Rana</td>
-                        <td class="price">400.00</td>
-                        <td><button class="remove-button"><i class="fas fa-trash"></i> Remove</button></td>
-                    </tr>
-                    <tr>
-                        <td>Jhola</td>
-                        <td>Krishna Dharabasi</td>
-                        <td class="price">300.00</td>
-                        <td><button class="remove-button"><i class="fas fa-trash"></i> Remove</button></td>
-                    </tr>
+                    <%
+                                }
+                            }
+                        } catch (SQLException e) {
+                            out.println("<tr><td colspan='5' class='error-message'>Error loading cart: " + e.getMessage() + "</td></tr>");
+                        } finally {
+                            if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                            if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                            if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        }
+                    %>
                 </tbody>
             </table>
             <div class="total-price">
-                Total Price: <span>Rs 1300.00</span>
+                Total Price: <span>Rs <%= String.format("%.2f", totalPrice) %></span>
             </div>
         </div>
 
-     
         <div class="payment-section">
             <h2>Payment Details</h2>
-            <form class="payment-form">
+            <form class="payment-form" action="${pageContext.request.contextPath}/OrderServlet" method="post">
+                <input type="hidden" name="redirectPage" value="/view/order/cart.jsp">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Enter Name">
+                        <input type="text" id="name" name="name" placeholder="Enter Name" value="<%= user.getName() != null ? user.getName() : "" %>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter Email">
+                        <input type="email" id="email" name="email" placeholder="Enter Email" value="<%= user.getEmail() != null ? user.getEmail() : "" %>" readonly>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="mobile">Mobile No</label>
-                        <input type="text" id="mobile" placeholder="Enter Mobile No">
+                        <input type="text" id="mobile" name="phone" placeholder="Enter Mobile No" value="<%= user.getPhno() != null ? user.getPhno() : "" %>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" id="address" placeholder="Enter Address">
+                        <input type="text" id="address" name="address" placeholder="Enter Address" value="<%= user.getAddress() != null ? user.getAddress() : "" %>" readonly>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="landmark">Landmark</label>
-                        <input type="text" id="landmark" placeholder="Locality">
+                        <input type="text" id="landmark" name="landmark" placeholder="Locality" value="<%= user.getLandmark() != null ? user.getLandmark() : "" %>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="city">City</label>
-                        <input type="text" id="city" placeholder="City">
+                        <input type="text" id="city" name="city" placeholder="City" value="<%= user.getCity() != null ? user.getCity() : "" %>" readonly>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="state">State</label>
-                        <input type="text" id="state" placeholder="State">
+                        <input type="text" id="state" name="state" placeholder="State" value="<%= user.getState() != null ? user.getState() : "" %>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="pincode">Pin Code</label>
-                        <input type="text" id="pincode" placeholder="Pin Code">
+                        <input type="text" id="pincode" name="pincode" placeholder="Pin Code" value="<%= user.getZip() != null ? user.getZip() : "" %>" readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="payment-type">Payment Type</label>
-                    <select id="payment-type">
-                        <option value="">--select--</option>
-                        <option value="cod">Cash on Delivery</option>
-   
-                    </select>
+                    <input type="text" id="payment-type" name="paymentType" value="Cash on Delivery" readonly>
                 </div>
-			               
-			                    <div class="action-buttons">
-			    <a href="${pageContext.request.contextPath}/view/order/orderSuccess.jsp" class="order-button">
-			        <i class="fas fa-shopping-cart"></i> Order Now
-			    </a>
-			    <a href="${pageContext.request.contextPath}/index.jsp" class="continue-button">
-			        <i class="fas fa-home"></i> Continue Shopping
-			    </a>
-</div>
-               
+                <div class="action-buttons">
+                    <button type="submit" class="order-button">
+                        <i class="fas fa-shopping-cart"></i> Order Now
+                    </button>
+                    <a href="${pageContext.request.contextPath}/view/BookUtils/newbook.jsp" class="continue-button">
+                        <i class="fas fa-home"></i> Continue Shopping
+                    </a>
+                </div>
             </form>
         </div>
     </div>

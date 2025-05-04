@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, model.connectionDAO, model.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -493,15 +494,15 @@
         <div class="summary-card">
             <div class="summary-item">
                 <i class="fas fa-shopping-cart"></i>
-                <span>Total Orders: 5</span>
+                <span>Total Orders: <span id="totalOrders">0</span></span>
             </div>
             <div class="summary-item">
                 <i class="fas fa-book"></i>
-                <span>Most Ordered Book: Muna Madan (2 orders)</span>
+                <span>Most Ordered Book: <span id="mostOrdered">N/A</span></span>
             </div>
             <div class="summary-item">
                 <i class="fas fa-money-bill"></i>
-                <span>Total Payment: Rs 1550.00</span>
+                <span>Total Payment: Rs <span id="totalPayment">0.00</span></span>
             </div>
         </div>
         <div class="table-controls">
@@ -526,64 +527,107 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <%
+                        User user = (User) session.getAttribute("user");
+                        if (user == null) {
+                            response.sendRedirect(request.getContextPath() + "/login.jsp?error=Please+login+to+view+orders&redirectPage=" + java.net.URLEncoder.encode("/view/order.jsp", "UTF-8"));
+                            return;
+                        }
+
+                        Connection conn = null;
+                        PreparedStatement stmt = null;
+                        ResultSet rs = null;
+                        boolean hasOrders = false;
+
+                        try {
+                            conn = connectionDAO.getconn();
+                            if (conn == null) {
+                                out.println("<tr><td colspan='9'>Error: Database connection failed.</td></tr>");
+                            } else {
+                                String sql;
+                                if (user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                                    // Admin sees all orders
+                                    sql = "SELECT * FROM book_order ORDER BY id DESC";
+                                } else {
+                                    // Normal user sees orders for admin-added books
+                                    sql = "SELECT bo.* FROM book_order bo JOIN book b ON bo.book_name = b.bookname WHERE b.user_email = 'admin@gmail.com' AND bo.user_name = ? ORDER BY bo.id DESC";
+                                    stmt = conn.prepareStatement(sql);
+                                    stmt.setString(1, user.getName());
+                                }
+                                if (!user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                                    stmt = conn.prepareStatement(sql);
+                                    stmt.setString(1, user.getName());
+                                } else {
+                                    stmt = conn.prepareStatement(sql);
+                                }
+                                rs = stmt.executeQuery();
+
+                                int totalOrders = 0;
+                                double totalPayment = 0.0;
+                                String mostOrderedBook = "N/A";
+                                int maxOrderCount = 0;
+
+                                java.util.Map<String, Integer> bookOrderCount = new java.util.HashMap<>();
+
+                                while (rs.next()) {
+                                    hasOrders = true;
+                                    totalOrders++;
+                                    String orderId = rs.getString("order_id");
+                                    String userName = rs.getString("user_name");
+                                    String email = rs.getString("email");
+                                    String address = rs.getString("address");
+                                    String phone = rs.getString("phone");
+                                    String bookName = rs.getString("book_name");
+                                    String author = rs.getString("author");
+                                    double price = rs.getDouble("price");
+                                    String payment = rs.getString("payment");
+                                    totalPayment += price;
+
+                                    // Track most ordered book
+                                    bookOrderCount.merge(bookName, 1, Integer::sum);
+                                    int count = bookOrderCount.get(bookName);
+                                    if (count > maxOrderCount) {
+                                        maxOrderCount = count;
+                                        mostOrderedBook = bookName;
+                                    }
+                    %>
                     <tr>
-                        <td class="order-id">1</td>
-                        <td class="name">Ramesh Shrestha</td>
-                        <td class="email">ramesh@gmail.com</td>
-                        <td class="address">Kathmandu, Nepal</td>
-                        <td>9841234567</td>
-                        <td class="book-name">Muna Madan</td>
-                        <td class="author">Laxmi Prasad Devkota</td>
-                        <td class="price">250.00</td>
-                        <td class="payment-type"><span class="online">Online</span></td>
+                        <td class="order-id"><%= orderId %></td>
+                        <td class="name"><%= userName %></td>
+                        <td class="email"><%= email %></td>
+                        <td class="address"><%= address %></td>
+                        <td><%= phone %></td>
+                        <td class="book-name"><%= bookName %></td>
+                        <td class="author"><%= author %></td>
+                        <td class="price"><%= price %></td>
+                        <td class="payment-type"><span><%= payment %></span></td>
                     </tr>
-                    <tr>
-                        <td class="order-id">2</td>
-                        <td class="name">Sita Thapa</td>
-                        <td class="email">sita123@gmail.com</td>
-                        <td class="address">Pokhara, Nepal</td>
-                        <td>9851234568</td>
-                        <td class="book-name">Muna Madan</td>
-                        <td class="author">Laxmi Prasad Devkota</td>
-                        <td class="price">250.00</td>
-                        <td class="payment-type"><span class="online">Online</span></td>
-                    </tr>
-                    <tr>
-                        <td class="order-id">3</td>
-                        <td class="name">Hari Gurung</td>
-                        <td class="email">hari@gmail.com</td>
-                        <td class="address">Biratnagar, Nepal</td>
-                        <td>9861234569</td>
-                        <td class="book-name">Shirishko Phool</td>
-                        <td class="author">Parijat</td>
-                        <td class="price">350.00</td>
-                        <td class="payment-type"><span class="online">Online</span></td>
-                    </tr>
-                    <tr>
-                        <td class="order-id">4</td>
-                        <td class="name">Gita Lama</td>
-                        <td class="email">gita@gmail.com</td>
-                        <td class="address">Lalitpur, Nepal</td>
-                        <td>9871234570</td>
-                        <td class="book-name">Seto Bagh</td>
-                        <td class="author">Diamond Shumsher Rana</td>
-                        <td class="price">400.00</td>
-                        <td class="payment-type"><span class="online">Online</span></td>
-                    </tr>
-                    <tr>
-                        <td class="order-id">5</td>
-                        <td class="name">Anil Rai</td>
-                        <td class="email">anil.rai@gmail.com</td>
-                        <td class="address">Dharan, Nepal</td>
-                        <td>9881234571</td>
-                        <td class="book-name">Jhola</td>
-                        <td class="author">Krishna Dharabasi</td>
-                        <td class="price">300.00</td>
-                        <td class="payment-type"><span class="online">Online</span></td>
-                    </tr>
+                    <%
+                                }
+
+                                // Update summary card dynamically
+                                out.println("<script>");
+                                out.println("document.getElementById('totalOrders').textContent = '" + totalOrders + "';");
+                                out.println("document.getElementById('mostOrdered').textContent = '" + mostOrderedBook + "';");
+                                out.println("document.getElementById('totalPayment').textContent = '" + String.format("%.2f", totalPayment) + "';");
+                                out.println("</script>");
+                            }
+                        } catch (SQLException e) {
+                            out.println("<tr><td colspan='9'>Error loading orders: " + e.getMessage() + "</td></tr>");
+                        } finally {
+                            if (rs != null) try { rs.close(); } catch (SQLException e) { /* Ignore */ }
+                            if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* Ignore */ }
+                            if (conn != null) try { conn.close(); } catch (SQLException e) { /* Ignore */ }
+                        }
+
+                        if (!hasOrders) {
+                    %>
                     <tr class="no-orders">
                         <td colspan="9">No Orders Found</td>
                     </tr>
+                    <%
+                        }
+                    %>
                 </tbody>
             </table>
         </div>

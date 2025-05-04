@@ -39,7 +39,14 @@
         </div>
     </div>
 
-    <%@ include file="view/BookUtils/book.jsp" %>
+<%
+    request.setAttribute("fromIndex", true);
+%>
+
+<jsp:include page="view/BookUtils/recentbook.jsp" />
+<jsp:include page="view/BookUtils/newbook.jsp" />
+<jsp:include page="view/BookUtils/oldbook.jsp" />
+
     <%@ include file="view/utils/footer.jsp" %>
 </body>
 </html>

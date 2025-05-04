@@ -224,6 +224,19 @@
             left: 100%;
         }
 
+        .success-message {
+            color: green;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+        }
+
         footer {
             background: #FFFFFF;
             padding: 15px 40px;
@@ -360,7 +373,7 @@
                         String bookCategory = rs.getString("bookCategory") != null ? rs.getString("bookCategory") : "Uncategorized";
             %>
             <div class="image-container">
-                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo %>">
+                <img alt="Book Cover" src="${pageContext.request.contextPath}/img/<%= photo != null ? photo : "default.jpg" %>">
             </div>
             <div class="details-container">
                 <div>
@@ -375,8 +388,10 @@
                         <span><i class="fas fa-truck"></i> Free Shipping</span>
                     </div>
                     <p class="price">Rs. <%= price %></p>
+                    <div id="message" class="success-message"></div>
+                    <div id="error" class="error-message"></div>
                 </div>
-                <a href="#" class="add-cart-btn"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                <button class="add-cart-btn" data-book-id="<%= bookId %>"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
             <% 
                     } else {
@@ -390,13 +405,47 @@
                 <p class="no-books">Error loading book details: <%= e.getMessage() %></p>
             <% 
                 } finally {
-                    if (rs != null) rs.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
+                    if (rs != null) try { rs.close(); } catch (SQLException e) { /* Ignore */ }
+                    if (stmt != null) try { stmt.close(); } catch (SQLException e) { /* Ignore */ }
+                    if (conn != null) try { conn.close(); } catch (SQLException e) { /* Ignore */ }
                 }
             %>
         </div>
     </div>
     <%@include file="../utils/footer.jsp" %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.add-cart-btn').addEventListener('click', function() {
+                var bookId = this.getAttribute('data-book-id');
+                var messageDiv = document.getElementById('message');
+                var errorDiv = document.getElementById('error');
+
+                fetch('${pageContext.request.contextPath}/AddToCartServlet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'bookId=' + encodeURIComponent(bookId)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageDiv.textContent = data.message;
+                        messageDiv.style.display = 'block';
+                        setTimeout(() => { messageDiv.style.display = 'none'; }, 3000);
+                    } else {
+                        errorDiv.textContent = data.message;
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                    }
+                })
+                .catch(error => {
+                    errorDiv.textContent = 'An error occurred. Please try again.';
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
