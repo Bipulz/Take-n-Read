@@ -466,7 +466,7 @@
                 <h3 class="brand"><i class="fa-solid fa-book-open-reader"></i> Take n' Read</h3>
             </div>
             <div class="middle">
-                <form class="search-form" role="search" action="${pageContext.request.contextPath}/search" method="get">
+                <form class="search-form" role="search">
                     <i class="fas fa-search"></i>
                     <input type="search" name="query" placeholder="Search books..." aria-label="Search">
                     <button class="button search-button" type="submit"><i class="fas fa-search"></i> Search</button>

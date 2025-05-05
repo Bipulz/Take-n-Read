@@ -81,13 +81,13 @@
                     if (stmt != null) stmt.close();
                     if (conn != null) conn.close();
                 } catch (SQLException e) {
-                    // Ignore
+                    
                 }
             }
         %>
     </div>
     <div class="view-al">
-        <a href="${pageContext.request.contextPath}/view/allBooks.jsp" class="btn"><i class="fas fa-book"></i> View All Books</a>
+        <a href="${pageContext.request.contextPath}/view/BookUtils/newbook.jsp" class="btn"><i class="fas fa-book"></i> View All Books</a>
     </div>
 </div>
 

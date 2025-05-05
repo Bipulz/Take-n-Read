@@ -52,7 +52,7 @@
                     <p class="book-category"><i class="fas fa-bookmark"></i> <%= bookCategory %></p>
                     <span class="price"><i class="fas fa-tag"></i> Rs. <%= price %></span>
                     <div class="row">
-                        <a href="${pageContext.request.contextPath}/view/BookUtils/userBookDetails.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
+                        <a href="${pageContext.request.contextPath}/view/BookUtils/oldbook.jsp?bookId=<%= bookId %>" class="btn view-dtl"><i class="fas fa-eye"></i> View Details</a>
                     </div>
                 </div>
             </div>
