@@ -50,6 +50,14 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
 
+            // Validate password requirements
+            if (!password.matches("^(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")) {
+                session.setAttribute("errorMessage", "Password must be at least 8 characters long and contain at least one special character (e.g., !@#$%^&*).");
+                System.out.println("Validation failed: Password does not meet requirements");
+                response.sendRedirect("register.jsp");
+                return;
+            }
+
             // Validate terms
             if (!"on".equals(acceptTerms)) {
                 session.setAttribute("errorMessage", "You must accept the terms and conditions.");

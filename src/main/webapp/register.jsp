@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-
         .logo {
             display: flex;
             align-items: center;
@@ -94,7 +93,7 @@
 
         .divider {
             height: 4px;
-            background: linear-gradient(to right, #A3BFFA, #FFFFFF);
+            background: linear-gradient(to right A3BFFA, #FFFFFF);
             margin-bottom: 20px;
             border-radius: 2px;
         }
@@ -269,6 +268,18 @@
             margin-top: 30px;
         }
 
+        .password-requirements {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .password-requirements.error {
+            color: #B91C1C;
+            display: block;
+        }
+
         @media (max-width: 768px) {
             header {
                 padding: 10px 20px;
@@ -364,99 +375,129 @@
 </head>
 <body>
 
- <%@include file="view/utils/Navbar.jsp" %>
+<%@include file="view/utils/Navbar.jsp" %>
 
-    <div class="main-content">
-        <div class="form-container">
-            <h2>Create Account</h2>
-            <div class="divider"></div>
-            <% 
-                String errorMessage = (String) session.getAttribute("errorMessage");
-                String successMessage = (String) session.getAttribute("successMessage");
-                if (errorMessage != null) {
-            %>
-                <div class="alert error">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <%= errorMessage %>
-                    <a href="${pageContext.request.contextPath}/register.jsp">Dismiss</a>
+<div class="main-content">
+    <div class="form-container">
+        <h2>Create Account</h2>
+        <div class="divider"></div>
+        <% 
+            String errorMessage = (String) session.getAttribute("errorMessage");
+            String successMessage = (String) session.getAttribute("successMessage");
+            if (errorMessage != null) {
+        %>
+            <div class="alert error">
+                <i class="fas fa-exclamation-circle"></i>
+                <%= errorMessage %>
+                <a href="${pageContext.request.contextPath}/register.jsp">Dismiss</a>
+            </div>
+        <% 
+                session.removeAttribute("errorMessage");
+            } 
+            if (successMessage != null) {
+        %>
+            <div class="alert success">
+                <i class="fas fa-check-circle"></i>
+                <%= successMessage %>
+                <a href="login.jsp">Continue to Login</a>
+            </div>
+        <% 
+                session.removeAttribute("successMessage");
+            } 
+        %>
+        <form action="register" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="full-name">Full Name<span>*</span></label>
+                <i class="fas fa-user"></i>
+                <input 
+                    type="text" 
+                    id="full-name" 
+                    name="fname"
+                    value="<%= request.getParameter("fname") != null ? request.getParameter("fname") : "" %>"
+                    placeholder="Enter your full name"
+                    required
+                >
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address<span>*</span></label>
+                <i class="fas fa-envelope"></i>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email"
+                    value="<%= request.getParameter("email") != null ? request.getParameter("email") : "" %>"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number<span>*</span></label>
+                <i class="fas fa-phone"></i>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phno"
+                    value="<%= request.getParameter("phno") != null ? request.getParameter("phno") : "" %>"
+                    placeholder="Enter your phone number"
+                    required
+                >
+            </div>
+            <div class="form-group">
+                <label for="password">Password<span>*</span></label>
+                <i class="fas fa-lock"></i>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                    oninput="validatePassword(this)"
+                >
+                <div id="password-error" class="password-requirements">
+                    Password must be at least 8 characters long and contain at least one special character (e.g., !@#$%^&*).
                 </div>
-            <% 
-                    session.removeAttribute("errorMessage");
-                } 
-                if (successMessage != null) {
-            %>
-                <div class="alert success">
-                    <i class="fas fa-check-circle"></i>
-                    <%= successMessage %>
-                    <a href="login.jsp">Continue to Login</a>
-                </div>
-            <% 
-                    session.removeAttribute("successMessage");
-                } 
-            %>
-            <form action="register" method="post">
-                <div class="form-group">
-                    <label for="full-name">Full Name<span>*</span></label>
-                    <i class="fas fa-user"></i>
-                    <input 
-                        type="text" 
-                        id="full-name" 
-                        name="fname"
-                        value="<%= request.getParameter("fname") != null ? request.getParameter("fname") : "" %>"
-                        placeholder="Enter your full name"
-                        required
-                    >
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address<span>*</span></label>
-                    <i class="fas fa-envelope"></i>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email"
-                        value="<%= request.getParameter("email") != null ? request.getParameter("email") : "" %>"
-                        placeholder="Enter your email"
-                        required
-                    >
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number<span>*</span></label>
-                    <i class="fas fa-phone"></i>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phno"
-                        value="<%= request.getParameter("phno") != null ? request.getParameter("phno") : "" %>"
-                        placeholder="Enter your phone number"
-                        required
-                    >
-                </div>
-                <div class="form-group">
-                    <label for="password">Password<span>*</span></label>
-                    <i class="fas fa-lock"></i>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password"
-                        placeholder="Create a password"
-                        required
-                    >
-                </div>
-                <div class="form-check">
-                    <input 
-                        type="checkbox" 
-                        id="accept-terms" 
-                        name="acceptTerms"
-                    >
-                    <label for="accept-terms">I accept the terms and conditions</label>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i>Create Account</button>
-            </form>
-        </div>
+            </div>
+            <div class="form-check">
+                <input 
+                    type="checkbox" 
+                    id="accept-terms" 
+                    name="acceptTerms"
+                >
+                <label for="accept-terms">I accept the terms and conditions</label>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i>Create Account</button>
+        </form>
     </div>
+</div>
 
-    <footer>
-        © 2025 Take n' Read. All rights reserved.
-    </footer>
+<footer>
+    © 2025 Take n' Read. All rights reserved.
+</footer>
+
+<script>
+    function validatePassword(input) {
+        const password = input.value;
+        const passwordError = document.getElementById('password-error');
+        const regex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        
+        if (!regex.test(password)) {
+            passwordError.classList.add('error');
+        } else {
+            passwordError.classList.remove('error');
+        }
+    }
+
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const regex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        
+        if (!regex.test(password)) {
+            document.getElementById('password-error').classList.add('error');
+            return false;
+        }
+        return true;
+    }
+</script>
+
 </body>
 </html>
