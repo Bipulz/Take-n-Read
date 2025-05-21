@@ -521,6 +521,7 @@
          
             <li><a href="${pageContext.request.contextPath}/view/essentials/userFeatures.jsp"><i class="fas fa-tools"></i> services</a></li>
             <li><a href="${pageContext.request.contextPath}/view/essentials/aboutUs.jsp"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="${pageContext.request.contextPath}/view/essentials/ContactUS.jsp"><i class="fa-solid fa-address-book"></i> Contact Us</a></li>
         </ul>
     </nav>
 </body>
